@@ -1,0 +1,15 @@
+#
+# This file is parsed by pam_env module
+#
+# Syntax: simple "KEY=VAL" pairs on separate lines
+#
+
+MOZ_ENABLE_WAYLAND=1
+QT_QPA_PLATEFORM=wayland-egl
+# GDK_BACKEND=wayland # Breaks apps?
+XDG_CURRENT_DESKTOP=Unity
+WLR_DRM_NO_ATOMIC=1
+QT_QPA_PLATFORM=xcb
+
+export PS1="\033[1m"$PS1
+DOTNET_CLI_TELEMETRY_OPTOUT=1
