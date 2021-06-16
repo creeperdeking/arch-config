@@ -21,6 +21,7 @@ sudo pacman -S mpsyt mplayer sl cowsay zsh
 #### The fun bit
 sudo pacman -S 
 
+wl-copy
 
 Then, we need the configuration files.
 Go into your home directory and then:

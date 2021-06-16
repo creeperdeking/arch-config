@@ -117,7 +117,9 @@ input type:keyboard {
 #
 # Basics:
 #
-#
+
+    bindsym $mod+comma exec grimshot copy area
+
     bindsym $mod+o exec brightnessctl s 10%+
 
     bindsym $mod+i exec brightnessctl s 10%-

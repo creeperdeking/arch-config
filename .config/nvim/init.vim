@@ -1,25 +1,43 @@
 set shell=/usr/bin/zsh
 
-let mapleader=","
 
-" Toggle line numbering mode (not working):
-noremap <leader>rn :set rnu!<cr>
+" Use space to go append 1 character
+:nnoremap <Space> a_<Esc>r
 
-:nnoremap <Space> i_<Esc>r
-
+""" Basic settings
 set ic
 set hls is
+
+" The number of line that vim tries to have above and below
 set scrolloff=20
 
 set tabstop=2
-set shiftwidth=2    " Indents will have a width of 4
+set expandtab       " Expand TABs to spaces
+set shiftwidth=2    " Indents will have a width of 2
 
 set softtabstop=2   " Sets the number of columns for a TAB
 
-set expandtab       " Expand TABs to spaces
+let mapleader=","
 
-set number
-set relativenumber
+set clipboard=unnamed
+
+set mouse=a " Accept mouse inputs
+
+" Use ,, to switch between buffers
+nnoremap <leader><leader> :b#<CR>
+
+" Show `▸▸` for tabs: 	, `·` for tailing whitespace:
+set list listchars=tab:▸▸,trail:·
+
+" Show colorcolumn at 80 character
+set colorcolumn=80
+:highlight ColorColumn ctermbg=grey guibg=lightgrey
+
+" Relative numbering with current line shown
+set number relativenumber
+
+" Toggle line numbering mode 
+noremap <leader>rn :set rnu!<cr>
 
 " Good copy and paste (desactivate auto indent when pasting)
 let &t_SI .= "\<Esc>[?2004h"
@@ -45,23 +63,29 @@ noremap! <Left> <Esc>
 noremap  <Right> ""
 noremap! <Right> <Esc>
 
-" Brace completion
+"auto close {
+function! s:CloseBracket()
+    let line = getline('.')
+    if line =~# '^\s*\(struct\|class\|enum\) '
+        return "{\<Enter>};\<Esc>O"
+    elseif searchpair('(', '', ')', 'bmn', '', line('.'))
+        " Probably inside a function call. Close it off.
+        return "{\<Enter>});\<Esc>O"
+    else
+        return "{\<Enter>}\<Esc>O"
+    endif
+endfunction
+inoremap <expr> {<Enter> <SID>CloseBracket()
 
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
 
+" Brace skipping
 inoremap        [  []<Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 
 inoremap        (  ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
 
-" Brace skipping
-
-inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
-
+" Markdown Preview shortcuts
 
 nmap <C-s> <Plug>MarkdownPreview
 nmap <M-s> <Plug>MarkdownPreviewStop
@@ -160,14 +184,27 @@ let g:mkdp_page_title = '「${name}」'
 " these filetypes will have MarkdownPreview... commands
 let g:mkdp_filetypes = ['markdown']
 
+" Plugins shortcuts
+nnoremap <leader>nt  :NERDTreeToggle<cr>
+
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=darkgrey
+hi IndentGuidesEven ctermbg=black
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
 
 " Vim plug:
 
 call plug#begin()
-"Plug 'tpope/vim-sensible'
+
+Plug 'tpope/vim-sensible'
+
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 Plug 'arcticicestudio/nord-vim'
+
+Plug 'nathanaelkane/vim-indent-guides'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }

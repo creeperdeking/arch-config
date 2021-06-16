@@ -1,5 +1,7 @@
 clear
-#cowsay "Hello, Space cowboy"
+echo "The edgy cow says:"
+echo ''
+cowsay "Hello, Space cowboy"
 #echo ""
 # mpvpaper eDP-1 ~/Images/masterrace.gif -o "no-audio loop"
 
@@ -24,5 +26,5 @@ if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
     clear
 
     exec sway
-fi       
+fi
 
