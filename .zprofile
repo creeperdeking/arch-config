@@ -13,11 +13,14 @@ clear
 #echo ""
 #sleep 0.5
 #echo " Knock, knock, Neo." | pv -qL 7
+
+
 if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
     echo ""
     sleep 1
     echo " Wake up, Neo..." | pv -qL 10
     sleep 0.2
+    waitforkey
     clear
 
     exec sway

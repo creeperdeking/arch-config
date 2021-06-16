@@ -1,20 +1,25 @@
 set shell=/usr/bin/zsh
 
+let mapleader=","
+
+" Toggle line numbering mode (not working):
+noremap <leader>rn :set rnu!<cr>
 
 :nnoremap <Space> i_<Esc>r
 
 set ic
 set hls is
-set scrolloff=10
+set scrolloff=20
 
-set tabstop=4
-set shiftwidth=4    " Indents will have a width of 4
+set tabstop=2
+set shiftwidth=2    " Indents will have a width of 4
 
-set softtabstop=4   " Sets the number of columns for a TAB
+set softtabstop=2   " Sets the number of columns for a TAB
 
 set expandtab       " Expand TABs to spaces
 
 set number
+set relativenumber
 
 " Good copy and paste (desactivate auto indent when pasting)
 let &t_SI .= "\<Esc>[?2004h"
@@ -46,6 +51,9 @@ inoremap {      {}<Left>
 inoremap {<CR>  {<CR>}<Esc>O
 inoremap {{     {
 inoremap {}     {}
+
+inoremap        [  []<Left>
+inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 
 inoremap        (  ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"

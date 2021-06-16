@@ -18,7 +18,7 @@ while :
 do
 
 	if [ "$i" -eq "5" ]; then 
-		BATTERY=$PRE"  $(acpi -b | cut -d' ' -f4 | sed 's/,*$//') $(acpi -b | cut -d' ' -f5 | cut -d':' -f1,2) "$COL'#ccbbaa'$CER
+		BATTERY=$PRE"  $(acpi -b | cut -d' ' -f4 | sed 's/,*$//') $(acpi -b | cut -d' ' -f5 | cut -d':' -f1,2)"$COL'#ccbbaa'$CER
 		DISK=$PRE" SSD: $(df -h | awk '/luks/ {print $5 " ("$3")" }') "$COL'#ccaabb'$CER
 		RAM=$PRE" RAM: $(free -m | awk 'NR==2{printf "%.0f%% (\%sM)", $3*100/$2,$3 } ') "$COL'#ccaabb'$CER
 		#UPTIME=$PRE" uptime: $(awk  '{printf "%.2f", $0/3600;}' /proc/uptime)h "$COL'#ccaabb'$CER

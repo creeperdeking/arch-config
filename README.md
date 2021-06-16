@@ -3,8 +3,24 @@ My personnalized arch configuration.
 
 ## How to setup
 
+### Install Archlinux
+
+Follow the arch installation guide:
+[text](https://wiki.archlinux.org/title/Installation_guide)
+
+#### The basics
+
+
 First, we need that software:
-sudo pacman -S sway nnn mpsyt mplayer sl cowsay zsh 
+sudo pacman -S sway swaylock nnn 
+
+#### 
+
+sudo pacman -S mpsyt mplayer sl cowsay zsh 
+
+#### The fun bit
+sudo pacman -S 
+
 
 Then, we need the configuration files.
 Go into your home directory and then:

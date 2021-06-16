@@ -1,4 +1,4 @@
-# Default config for sway
+
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
 #
@@ -15,7 +15,7 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term alacritty
-set $shutdown systemctl poweroff
+set $shutdown shutdown 0
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -29,6 +29,7 @@ seat * hide_cursor 3000
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg #000000 solid_color
+output "*" bg ~/Images/Wallpaper/vim.png fill
 output eDP-1 scale 2
 #
 # Example configuration:
@@ -208,6 +209,8 @@ input type:keyboard {
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+
+
 #
 # Layout stuff:
 #
@@ -304,5 +307,25 @@ bar {
 
 include /etc/sway/config.d/*
 
-#exec alacritty -e sudo pacman -Syu; alacritty
 #exec mpvpaper eDP-1 ~/Images/matrice.mp4 -o "no-audio loop"
+
+# Autostart application on specific workspaces
+
+workspace 10
+
+exec firefox -new-tab https://open.spotify.com/ -P Misc
+exec firefox -new-tab https://discord.com/login -P Misc
+
+workspace 9
+
+exec alacritty -e sh -c "mpsyt pl https://www.youtube.com/playlist?list=PLiVs_ojBPhdkPlZVoB3y-8fxkddimQ-il; zsh" 
+
+workspace 1
+
+exec firefox 
+
+workspace 2
+
+exec alacritty -e sh -c "sudo pacman -Syu; arch-audit; zsh"
+
+
