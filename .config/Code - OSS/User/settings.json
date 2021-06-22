@@ -1,0 +1,11 @@
+{
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "workbench.colorTheme": "GreenBlue Theme",
+                        "workbench.iconTheme": "chalice-icon-theme",
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 20,
+    "editor.cursorSurroundingLinesStyle": "all",
+    "editor.rulers": [
+        80, 100
+    ]
+}
