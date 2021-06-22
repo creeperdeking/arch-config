@@ -26,7 +26,7 @@ setopt HIST_IGNORE_ALL_DUPS
 #
 
 # Set editor default keymap to emacs (`-e`) or vi (`-v`)
-bindkey -e
+bindkey -v
 
 # Prompt for spelling correction of commands.
 #setopt CORRECT
@@ -122,10 +122,13 @@ PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.
 
 alias obs="QT_QPA_PLATFORM=xcb obs"
 alias cleanpacmanpkg="pacman -Rsn $(pacman -Qdtq)"
+# Tmux
 alias t="tmux"
 alias ta="t a -t"
 alias tls="t ls"
 alias tn="t new -t"
+# I don't know why but sometimes the wifi just go down
+alias wlan0up="sudo rfkill unblock 1"
 
 ## use the vi navigation keys (hjkl) besides cursor keys in menu completion
 bindkey -M menuselect 'h' vi-backward-char        # left

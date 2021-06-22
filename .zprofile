@@ -1,7 +1,4 @@
 clear
-echo "The edgy cow says:"
-echo ''
-cowsay "Hello, Space cowboy"
 #echo ""
 # mpvpaper eDP-1 ~/Images/masterrace.gif -o "no-audio loop"
 

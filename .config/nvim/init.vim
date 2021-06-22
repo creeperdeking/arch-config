@@ -2,7 +2,10 @@ set shell=/usr/bin/zsh
 
 
 " Use space to go append 1 character
-:nnoremap <Space> a_<Esc>r
+:nnoremap <Space> i_<Esc>r
+
+set wildmenu "better commandline completion
+
 
 """ Basic settings
 set ic
@@ -11,17 +14,22 @@ set hls is
 " The number of line that vim tries to have above and below
 set scrolloff=20
 
-set tabstop=2
 set expandtab       " Expand TABs to spaces
-set shiftwidth=2    " Indents will have a width of 2
+" Enable intelligent tabbing and spacing for indentation and alignment
+set smarttab
 
-set softtabstop=2   " Sets the number of columns for a TAB
+" Number of visual spaces per TAB
+set tabstop=2
+" Number of spaces indented when reindent operations (>> and <<) are used
+set shiftwidth=2
+" Sets the number of columns for a TAB
+set softtabstop=2
 
 let mapleader=","
 
 set clipboard=unnamed
 
-set mouse=a " Accept mouse inputs
+"set mouse=n " Accept mouse inputs
 
 " Use ,, to switch between buffers
 nnoremap <leader><leader> :b#<CR>
