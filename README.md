@@ -36,8 +36,8 @@ sudo pacman -S sl cowsay
 
 #### Recovering all the configurations from git
 
-Then, we need the configuration files.
 Go into your home directory and then:
+
 git clone git@github.com:creeperdeking/arch-config.git
 cd arch-config
 git config core.worktree "../../"
@@ -46,5 +46,23 @@ git reset --hard origin/master
 #### DNS resolution/dhcp setup
 
 systemctl enable systemd-resolved.service
+
+#### Bluetooth
+
+systemctl enable bluetooth.service
+
+#### Correct mime type identification
+
+edit /usr/share/applications/mimeinfo.cache
+
+#### NNN configuration
+
+- install all plugins
+curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+
+### VS Code configuration
+
+The VS code config file is included in the git repo, you will want to install
+the neovim extension. The green blue theme should be installed by default.
 
 

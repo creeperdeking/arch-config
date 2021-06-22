@@ -13,6 +13,7 @@ clear
 #sleep 0.5
 #echo " Knock, knock, Neo." | pv -qL 7
 
+export NNN_FIFO=/home/alexis/Documents/bin/nnnfifo
 
 if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
     echo ""
