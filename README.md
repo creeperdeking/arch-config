@@ -65,4 +65,14 @@ curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | s
 The VS code config file is included in the git repo, you will want to install
 the neovim extension. The green blue theme should be installed by default.
 
+#### Megasync
+
+https://aur.archlinux.org/megasync.git
+makepkg -si
+
+Synchronise Documents/
+Ignore Documents/bin and Documents/software
+Synchronise Pictures
+
+Synchronise the profiles in firefox, but ignore the storage folder of the profile
 
