@@ -126,9 +126,9 @@ input type:touchpad {
 
 bindsym $mod+comma exec grimshot copy area
 
-bindsym $mod+o exec brightnessctl s 10%+
+bindsym $mod+o exec brightnessctl s 5%+
 
-bindsym $mod+i exec brightnessctl s 10%-
+bindsym $mod+i exec brightnessctl s 5%-
 
 bindsym $mod+p exec pactl set-sink-volume 0 +5%
 
@@ -330,6 +330,14 @@ workspace 10
 
 exec firefox -new-tab https://open.spotify.com/ -P Misc
 exec firefox -new-tab https://discord.com/login -P Misc
+exec firefox -new-tab https://web.whatsapp.com/ -P Misc
+exec firefox -new-tab https://www.messenger.com/t/1539233009472515 -P Misc
+exec firefox -new-tab https://mail.google.com/mail/u/0/#inbox -P Misc
+exec firefox -new-tab https://z.imt.fr/zimbra/ -P Misc
+exec firefox -new-tab https://webmail.intranet.edf.com/my.policy -P Misc
+
+
+
 
 workspace 9
 
