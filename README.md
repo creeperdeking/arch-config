@@ -37,11 +37,12 @@ sudo pacman -S sl cowsay
 #### Recovering all the configurations from git
 
 Go into your home directory and then:
-
+```
 git clone git@github.com:creeperdeking/arch-config.git
 cd arch-config
 git config core.worktree "../../"
 git reset --hard origin/master
+```
 
 #### DNS resolution/dhcp setup
 
