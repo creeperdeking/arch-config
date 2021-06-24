@@ -1,7 +1,6 @@
 {
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
-    "workbench.colorTheme": "GreenBlue Theme",
-                        "workbench.iconTheme": "chalice-icon-theme",
+    "workbench.colorTheme": "Dark Green",
     "editor.lineNumbers": "relative",
     "editor.cursorSurroundingLines": 20,
     "editor.cursorSurroundingLinesStyle": "all",
@@ -13,5 +12,6 @@
     "editor.wordWrap": "on",
     "telemetry.enableCrashReporter": false,
     "telemetry.enableTelemetry": false,
-    "window.menuBarVisibility": "toggle"
+    "window.menuBarVisibility": "toggle",
+    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\alexis\\scoop\\shims\\nvim.exe"
 }
