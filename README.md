@@ -52,6 +52,10 @@ systemctl enable systemd-resolved.service
 
 systemctl enable bluetooth.service
 
+#### Vim-plug installation
+
+[text](https://github.com/junegunn/vim-plug)
+
 #### Correct mime type identification
 
 edit /usr/share/applications/mimeinfo.cache
@@ -61,7 +65,7 @@ edit /usr/share/applications/mimeinfo.cache
 - install all plugins
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
-### VS Code configuration
+#### VS Code configuration
 
 The VS code config file is included in the git repo, you will want to install
 the neovim extension. The green blue theme should be installed by default.
@@ -76,4 +80,16 @@ Ignore Documents/bin and Documents/software
 Synchronise Pictures
 
 Synchronise the profiles in firefox, but ignore the storage folder of the profile
+
+### Windows linking
+
+You can do the same on your windows home directory but you have to relink the relevant configuration files to their windows path:
+
+#### VSCode
+
+#### NeoVim
+
+```
+ New-Item -ItemType SymbolicLink -Path "~\AppData\Local\nvim\init.vim" -Target "~\.config\nvim\init.vim"
+```
 
