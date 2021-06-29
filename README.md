@@ -54,7 +54,12 @@ systemctl enable bluetooth.service
 
 #### Vim-plug installation
 
-[text](https://github.com/junegunn/vim-plug)
+[Vim Plug git](https://github.com/junegunn/vim-plug)
+```
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+```
+Then type :PlugInstall in neovim
 
 #### Correct mime type identification
 
@@ -92,4 +97,11 @@ You can do the same on your windows home directory but you have to relink the re
 ```
  New-Item -ItemType SymbolicLink -Path "~\AppData\Local\nvim\init.vim" -Target "~\.config\nvim\init.vim"
 ```
+
+# Ubuntu WSL configuration
+
+Here are my tips for using this configuration effectively on WSL:
+
+## WSL setup
+
 
