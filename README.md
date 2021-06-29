@@ -44,6 +44,18 @@ git config core.worktree "../../"
 git reset --hard origin/master
 ```
 
+#### SSH
+
+First, create a key:
+```
+ssh-keygen -t ed25519 -C "alexis.gros99@gmail.com"
+```
+Type enter until the command finishes, then
+```
+cat ~/.ssh/id_ed25519.pub
+```
+
+
 #### DNS resolution/dhcp setup
 
 systemctl enable systemd-resolved.service
@@ -104,4 +116,23 @@ Here are my tips for using this configuration effectively on WSL:
 
 ## WSL setup
 
+In PowerShell:
+```
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 
+```
+Restart Windows
+
+Install [WSL update for windows 10](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
+
+In PowerShell:
+```
+wsl --set-default-version 2
+```
+
+Got to the windows store and install Ubuntu 20.04 LTS
+
+## Basic software install
+
+First, use the commands above to install this git, then
