@@ -6,11 +6,11 @@ My personnalized arch configuration.
 ## Install Archlinux
 
 Follow the arch installation guide:
-[text](https://wiki.archlinux.org/title/Installation_guide)
+<https://wiki.archlinux.org/title/Installation_guide>
 - Always use systemd native tooling when you have a choice
 
 For the encryption part, follow this tutorial:
-[text](https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/)
+<https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/>
 
 
 Install the basics:
@@ -27,13 +27,45 @@ initrd /initramfs-linux.img
 options cryptdevice=UUID=04a3a24d-11b6-4a08-9979-522117944c9f:cryptroot root=/dev/mapper/cryptroot rw intel_pstate=no_hwp
 ```
 
+copy the file in ~/.setup/environnement into /etc/environnement
+
+Enable dns resolving, wifi, bluetooth:
+```
+systemctl start systemd-resolved.service
+systemctl enable systemd-resolved.service
+
+systemctl start iwd.service
+systemctl enable iwd.service
+
+systemctl start bluetooth.service
+systemctl enable bluetooth.service
+
+systemctl start systemd-timesyncd.service
+systemctl enable systemd-timesyncd.service
+
+systemctl start wl-copy
+systemctl enable wl-copy
+```
+
+#### Don't ask for username on tty1
+```
+systemctl edit getty@tty1
+```
+```
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -n -o username %I
+```
+```
+systemctl enable getty@tty1
+```
 
 ### The basics
 
 First, we need that software:
 
 ```
-sudo pacman -S nvim tree zsh sway swaylock nnn git irssi firefox pulseaudio pulsemixer alacritty systemctl enable wl-copy
+sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty
 ```
 
 - Install zplug
