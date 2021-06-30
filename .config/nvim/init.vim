@@ -1,15 +1,25 @@
 set shell=/usr/bin/zsh
 
+set encoding=utf-8
+scriptencoding utf-8
 
 " Use space to go append 1 character
 :nnoremap <Space> i_<Esc>r
 
 set wildmenu "better commandline completion
-
-
+            f
 """ Basic settings
 set ic
 set hls is
+
+" Show errors for trailing spaces
+match ErrorMsg '\s\+$' 
+set showbreak=↪\ 
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+set list lcs=tab:\|\ 
+"set listchars=eol:↲,tab:>·,trail:·,extends:→
+set listchars=tab:\|\ ,extends:»,precedes:«,nbsp:‡,trail:·
 
 " The number of line that vim tries to have above and below
 set scrolloff=20
@@ -34,9 +44,6 @@ set clipboard=unnamed
 " Use ,, to switch between buffers
 nnoremap <leader><leader> :b#<CR>
 
-" Show `▸▸` for tabs: 	, `·` for tailing whitespace:
-set list listchars=tab:▸▸,trail:·
-
 " Show colorcolumn at 80 character
 set colorcolumn=80
 :highlight ColorColumn ctermbg=grey guibg=lightgrey
@@ -44,7 +51,7 @@ set colorcolumn=80
 " Relative numbering with current line shown
 set number relativenumber
 
-" Toggle line numbering mode 
+" Toggle line numbering mode
 noremap <leader>rn :set rnu!<cr>
 
 " Good copy and paste (desactivate auto indent when pasting)
@@ -59,17 +66,16 @@ function! XTermPasteBegin()
    return ""
 endfunction
 
-
 " Desactivate arrow keys
 
 noremap  <Up> ""
-noremap! <Up> <Esc>
+"noremap! <Up> <Esc>
 noremap  <Down> ""
-noremap! <Down> <Esc>
+"noremap! <Down> <Esc>
 noremap  <Left> ""
-noremap! <Left> <Esc>
+"noremap! <Left> <Esc>
 noremap  <Right> ""
-noremap! <Right> <Esc>
+"noremap! <Right> <Esc>
 
 "auto close {
 function! s:CloseBracket()
@@ -212,7 +218,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 Plug 'arcticicestudio/nord-vim'
 
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }

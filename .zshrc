@@ -5,6 +5,17 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# --------------- My configuration --------------
+
+
+# I don't know why but sometimes the wifi just go down
+alias wlan0up="sudo rfkill unblock 1"
+
+
+# -----------------------------------------------
+
+
+
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells
@@ -118,8 +129,6 @@ if [ -r ~/.zshrc -a -r ~/.zshrc.global -a ! -r ~/.zshrc.local ] ; then
 fi
 PS1='%/ $ ' # /tmp $
 
-PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.0.0/bin
-
 alias obs="QT_QPA_PLATFORM=xcb obs"
 alias cleanpacmanpkg="pacman -Rsn $(pacman -Qdtq)"
 # Tmux
@@ -127,8 +136,6 @@ alias t="tmux"
 alias ta="t a -t"
 alias tls="t ls"
 alias tn="t new -t"
-# I don't know why but sometimes the wifi just go down
-alias wlan0up="sudo rfkill unblock 1"
 
 ## use the vi navigation keys (hjkl) besides cursor keys in menu completion
 bindkey -M menuselect 'h' vi-backward-char        # left
@@ -214,7 +221,7 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@" -e
+    nnn "$@" -e -P preview-tui
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
@@ -232,6 +239,4 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
 

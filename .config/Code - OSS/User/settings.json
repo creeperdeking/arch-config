@@ -13,5 +13,6 @@
     "editor.wordWrap": "on",
     "telemetry.enableCrashReporter": false,
     "telemetry.enableTelemetry": false,
-    "window.menuBarVisibility": "toggle"
+    "window.menuBarVisibility": "toggle",
+    "git.autofetch": true
 }
