@@ -84,11 +84,24 @@ sudo pacman -S sl cowsay
 ### Recovering all the configurations from git
 
 Go into your home directory and then:
-
+```
 git clone git@github.com:creeperdeking/arch-config.git
 cd arch-config
 git config core.worktree "../../"
 git reset --hard origin/master
+```
+
+#### SSH
+
+First, create a key:
+```
+ssh-keygen -t ed25519 -C "alexis.gros99@gmail.com"
+```
+Type enter until the command finishes, then
+```
+cat ~/.ssh/id_ed25519.pub
+```
+
 
 ### DNS resolution/dhcp setup
 
@@ -102,15 +115,25 @@ systemctl enable bluetooth.service
 
 edit /usr/share/applications/mimeinfo.cache
 
+#### Vim-plug installation
+
+[Vim Plug git](https://github.com/junegunn/vim-plug)
+```
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+```
+Then type :PlugInstall in neovim
+
 ### NNN configuration
 
 - install all plugins
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
 - Previews
-
+use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
 
 ## VS Code configuration
+#### VS Code configuration
 
 The VS code config file is included in the git repo, you will want to install
 the neovim extension. The green blue theme should be installed by default.
@@ -126,3 +149,41 @@ Synchronise Pictures
 
 Synchronise the profiles in firefox, but ignore the storage folder of the profile
 
+### Windows linking
+
+You can do the same on your windows home directory but you have to relink the relevant configuration files to their windows path:
+
+#### VSCode
+
+#### NeoVim
+
+```
+ New-Item -ItemType SymbolicLink -Path "~\AppData\Local\nvim\init.vim" -Target "~\.config\nvim\init.vim"
+```
+
+# Ubuntu WSL configuration
+
+Here are my tips for using this configuration effectively on WSL:
+
+## WSL setup
+
+In PowerShell:
+```
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+```
+Restart Windows
+
+Install [WSL update for windows 10](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi)
+
+In PowerShell:
+```
+wsl --set-default-version 2
+```
+
+Got to the windows store and install Ubuntu 20.04 LTS
+
+## Basic software install
+
+First, use the commands above to install this git, then
