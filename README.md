@@ -75,7 +75,24 @@ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/instal
 
 - Set zsh as your default shell in /etc/passwd
 
+- Create a new group
+```
+groupadd sudo
+```
+
 - Create a new user
+```
+sudo useradd -m alexis -G sudo
+```
+
+- Configure sudo
+```
+sudo visudo
+```
+Add line
+```
+%sudo ALL=(ALL) ALL
+```
 
 ### Multimedia
 
