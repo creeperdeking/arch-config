@@ -65,7 +65,7 @@ systemctl enable getty@tty1
 First, we need that software:
 
 ```
-sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins
+sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
 ```
 
 - Install zplug
