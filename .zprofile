@@ -25,6 +25,7 @@ if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
 #    echo " Wake up, Neo..." | pv -qL 10
 #    sleep 0.2
 #    waitforkey
+  cmatrix -bas -u 3
     clear
 
     exec sway
