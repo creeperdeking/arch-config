@@ -65,7 +65,7 @@ systemctl enable getty@tty1
 First, we need that software:
 
 ```
-sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty
+sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins
 ```
 
 - Install zplug
@@ -93,6 +93,16 @@ Add line
 ```
 %sudo ALL=(ALL) ALL
 ```
+
+### Firewall
+
+```
+sudo pacman -S nftables
+
+sudo systemctl start nftables.service
+sudo systemctl enable nftables.service
+```
+
 
 ### Multimedia
 
