@@ -26,7 +26,7 @@ set $shutdown shutdown 0
 # opened on the original workspace that the command was run on.
 set $menu wofi --show run
 
-set $sleep swaylock -f -c 000000
+set $sleep swaylock -f -c 000000 -i $HOME"/Pictures/creations/himanity 16.jpg"
 
 seat * hide_cursor 3000
 
@@ -82,10 +82,10 @@ exec wl-paste -t text --watch clipman store
 #output eDP-1 bg '#000000' solid_color
 
  exec swayidle -w \
-          timeout 300 'swaylock -f -c 000000' \
+          timeout 300 $sleep \
           timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
-          before-sleep 'swaylock -f -c 000000'
+          before-sleep $sleep
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
