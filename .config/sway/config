@@ -26,7 +26,7 @@ set $shutdown shutdown 0
 # opened on the original workspace that the command was run on.
 set $menu wofi --show run
 
-set $sleep swaylock -f -c 000000
+set $sleep swaylock -f -c 000000 -i $HOME"/Pictures/creations/himanity 16.jpg"
 
 seat * hide_cursor 3000
 
@@ -36,7 +36,7 @@ seat * hide_cursor 3000
 # /usr/share/backgrounds/sway/)
 #
 output * bg #000000 solid_color
-output "*" bg ~/Pictures/Wallpaper/attention.png fill
+output "*" bg ~/Pictures/Wallpaper/cyberpunk.jpg fill
 output eDP-1 scale 2
 #
 # Example configuration:
@@ -82,10 +82,10 @@ exec wl-paste -t text --watch clipman store
 #output eDP-1 bg '#000000' solid_color
 
  exec swayidle -w \
-          timeout 300 'swaylock -f -c 000000' \
+          timeout 300 $sleep \
           timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
-          before-sleep 'swaylock -f -c 000000'
+          before-sleep $sleep
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -141,7 +141,7 @@ bindsym $mod+Shift+d exec $sleep
 bindsym $mod+Shift+Shift+r exec reboot
 
 # shutdown
-bindsym $mod+Shift+Shift+s exec $shutdown
+bindsym $mod+Shift+Shift+s exec shutdown 0
 
 # Start a terminal
 bindsym $mod+Return exec $term
@@ -335,9 +335,6 @@ exec firefox -new-tab https://www.messenger.com/t/1539233009472515 -P Misc
 exec firefox -new-tab https://mail.google.com/mail/u/0/#inbox -P Misc
 exec firefox -new-tab https://z.imt.fr/zimbra/ -P Misc
 exec firefox -new-tab https://webmail.intranet.edf.com/my.policy -P Misc
-
-
-
 
 workspace 9
 

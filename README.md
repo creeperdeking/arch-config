@@ -1,40 +1,146 @@
 # arch-config
-My personnalized arch configuration. 
+My personnalized arch configuration.
 
-## How to setup
+# How to setup
 
-### Install Archlinux
+## Install Archlinux
 
 Follow the arch installation guide:
-[text](https://wiki.archlinux.org/title/Installation_guide)
+<https://wiki.archlinux.org/title/Installation_guide>
 - Always use systemd native tooling when you have a choice
 
 For the encryption part, follow this tutorial:
-[text](https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/)
+<https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/>
+
 
 Install the basics:
+```
 pacstrap /mnt base linux linux-firmware man-db man-pages texinfo alsa-utils broadcom-wl cryptsetup diffutils dosfstools e2fsprogs edk2-shell efibootmgr alsa-utils b43-fwcutter ethtool exfatprogs fatresize gpm gptfdisk grml-zsh-config hdparm intel-ucodeipw2100-fw ipw2200-fw iw iwc less libusb-compat lynx memtest86+ mkinitcpio mtools openssh openssh reflector rsync sdparm smartmontools sof-firmware sudo systemd-resolvconf tcpdump testdisk usbutils usbmuxd usb_modeswitch wireless-regdb
+```
 
+You will have to write a different version of /boot/loader/entries/arch.conf if you don't use lvm, for example:
+```
+title Arch Linux
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux.img
+options cryptdevice=UUID=04a3a24d-11b6-4a08-9979-522117944c9f:cryptroot root=/dev/mapper/cryptroot rw intel_pstate=no_hwp
+```
 
-#### The basics
+copy the file in ~/.setup/environnement into /etc/environnement
+
+Enable dns resolving, wifi, bluetooth:
+```
+systemctl start systemd-resolved.service
+systemctl enable systemd-resolved.service
+
+systemctl start iwd.service
+systemctl enable iwd.service
+
+systemctl start bluetooth.service
+systemctl enable bluetooth.service
+
+systemctl start systemd-timesyncd.service
+systemctl enable systemd-timesyncd.service
+
+systemctl start wl-copy
+systemctl enable wl-copy
+```
+
+#### Don't ask for username on tty1
+```
+systemctl edit getty@tty1
+```
+```
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -n -o username %I
+```
+```
+systemctl enable getty@tty1
+```
+
+### The basics
 
 First, we need that software:
 
-sudo pacman -S nvim zsh sway swaylock nnn git irssi firefox pulseaudio pulsemixer alacritty systemctl enable wl-copy
+```
+sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
+```
 
-#### Multimedia
+- Install zplug
+```
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+```
 
+- Set zsh as your default shell in /etc/passwd
+
+- Create a new group
+```
+groupadd sudo
+```
+
+- Create a new user
+```
+sudo useradd -m alexis -G sudo
+```
+
+- Configure sudo
+```
+sudo visudo
+```
+Add line
+```
+%sudo ALL=(ALL) ALL
+```
+
+### Firewall
+
+```
+sudo pacman -S nftables
+
+sudo systemctl start nftables.service
+sudo systemctl enable nftables.service
+```
+
+
+### Multimedia
+
+```
 sudo pacman -S mpsyt mplayer mpv imv
 
 sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
 sudo chmod a+rx /usr/local/bin/youtube-dl
+```
 
-#### Fun
+### System maintenance
+
+```
+sudo pacman -S filelight
+```
+
+### Investigation
+
+Exiftool for seeing images metadata
+```
+sudo pacman perl-image-exiftool
+```
+
+### Hacking
+
+```
+sudo pacman -Syu macchanger
+```
+
+### Fun
 sudo pacman -S sl cowsay
 
-### Configuration:
 
-#### Recovering all the configurations from git
+
+
+## Configuration:
+
+### Recovering all the configurations from git
 
 Go into your home directory and then:
 ```
@@ -56,13 +162,17 @@ cat ~/.ssh/id_ed25519.pub
 ```
 
 
-#### DNS resolution/dhcp setup
+### DNS resolution/dhcp setup
 
 systemctl enable systemd-resolved.service
 
-#### Bluetooth
+### Bluetooth
 
 systemctl enable bluetooth.service
+
+### Correct mime type identification
+
+edit /usr/share/applications/mimeinfo.cache
 
 #### Vim-plug installation
 
@@ -73,21 +183,21 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 ```
 Then type :PlugInstall in neovim
 
-#### Correct mime type identification
-
-edit /usr/share/applications/mimeinfo.cache
-
-#### NNN configuration
+### NNN configuration
 
 - install all plugins
 curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
 
+- Previews
+use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
+
+## VS Code configuration
 #### VS Code configuration
 
 The VS code config file is included in the git repo, you will want to install
 the neovim extension. The green blue theme should be installed by default.
 
-#### Megasync
+### Megasync
 
 https://aur.archlinux.org/megasync.git
 makepkg -si

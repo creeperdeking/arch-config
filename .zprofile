@@ -13,14 +13,19 @@ clear
 #sleep 0.5
 #echo " Knock, knock, Neo." | pv -qL 7
 
-#export NNN_FIFO=/home/alexis/Documents/bin/nnnfifo
+PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.0.0/bin
+
+export NNN_FIFO=/tmp/nnn.fifo
+
+export NNN_PLUG='f:finder;t:nmount;v:imgview;u:preview-tui;i:preview-tabbed'
 
 if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-    echo ""
-    sleep 1
-    echo " Wake up, Neo..." | pv -qL 10
-    sleep 0.2
-    waitforkey
+#    echo ""
+#    sleep 1
+#    echo " Wake up, Neo..." | pv -qL 10
+#    sleep 0.2
+#    waitforkey
+  cmatrix -bas -u 3
     clear
 
     exec sway

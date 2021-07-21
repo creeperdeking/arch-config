@@ -12,3 +12,5 @@
     undo = reset HEAD~1 --mixed
     reset = !git reset --hard
     done = !git push origin HEAD
+[pull]
+	rebase = false
