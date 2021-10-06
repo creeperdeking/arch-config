@@ -15,7 +15,7 @@ For the encryption part, follow this tutorial:
 
 Install the basics:
 ```
-pacstrap /mnt base linux linux-firmware man-db man-pages texinfo alsa-utils broadcom-wl cryptsetup diffutils dosfstools e2fsprogs edk2-shell efibootmgr alsa-utils b43-fwcutter ethtool exfatprogs fatresize gpm gptfdisk grml-zsh-config hdparm intel-ucodeipw2100-fw ipw2200-fw iw iwc less libusb-compat lynx memtest86+ mkinitcpio mtools openssh openssh reflector rsync sdparm smartmontools sof-firmware sudo systemd-resolvconf tcpdump testdisk usbutils usbmuxd usb_modeswitch wireless-regdb
+pacstrap /mnt base linux linux-firmware man-db man-pages texinfo alsa-utils broadcom-wl cryptsetup diffutils dosfstools e2fsprogs edk2-shell efibootmgr alsa-utils b43-fwcutter ethtool exfatprogs fatresize gpm gptfdisk grml-zsh-config hdparm intel-ucode ipw2100-fw ipw2200-fw iw iwd less libusb-compat lynx memtest86+ mkinitcpio mtools openssh openssh reflector rsync sdparm smartmontools sof-firmware sudo systemd-resolvconf tcpdump testdisk usbutils usbmuxd usb_modeswitch wireless-regdb
 ```
 
 You will have to write a different version of /boot/loader/entries/arch.conf if you don't use lvm, for example:
@@ -61,11 +61,17 @@ systemctl enable getty@tty1
 ```
 
 ### The basics
-
-First, we need that software:
+:
+Firstv w  need that software:
 
 ```
-sudo pacman -S nvim bluetoothctl tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
+sudo pacman -Syu neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
+```
+
+### Sway
+
+```
+sudo pacman -Syu swaylock wofi clipman wl-paste grimshot brightnessctl pactl
 ```
 
 - Install zplug
@@ -168,6 +174,9 @@ systemctl enable systemd-resolved.service
 
 ### Bluetooth
 
+```
+sudo pacman -Syu blueberry
+```
 systemctl enable bluetooth.service
 
 ### Correct mime type identification
