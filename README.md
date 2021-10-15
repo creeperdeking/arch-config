@@ -49,23 +49,19 @@ systemctl enable wl-copy
 
 #### Don't ask for username on tty1
 ```
-systemctl edit getty@tty1
+sudo vim /etc/systemd/system/getty.target.wants/getty@tty1.service
 ```
 ```
 [Service]
-ExecStart=
-ExecStart=-/sbin/agetty -n -o username %I
-```
-```
-systemctl enable getty@tty1
+ExecStart=-/sbin/agetty -n -o alexis %I
 ```
 
 ### The basics
 :
-Firstv w  need that software:
+Firstv we need that software:
 
 ```
-sudo pacman -Syu neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock nnn git irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
+sudo pacman -Syu bc acpi neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock swayidle nnn git xorg-xrdb irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
 ```
 
 ### Sway
@@ -74,9 +70,9 @@ sudo pacman -Syu neovim autoconf automake awk sed neovim-symlinks bluez gcc patc
 sudo pacman -Syu swaylock wofi clipman wl-paste grimshot brightnessctl pactl
 ```
 
-- Install zplug
+- Install zim
 ```
-curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 ```
 
 - Set zsh as your default shell in /etc/passwd
@@ -98,6 +94,13 @@ sudo visudo
 Add line
 ```
 %sudo ALL=(ALL) ALL
+```
+
+- Install yay
+
+- Install truetype gnu fonts
+```
+yay -Syu ttf-unifont
 ```
 
 ### Firewall
@@ -170,6 +173,9 @@ cat ~/.ssh/id_ed25519.pub
 
 ### DNS resolution/dhcp setup
 
+
+Configure dhcp in /etc/systemd/... for each networking device
+
 systemctl enable systemd-resolved.service
 
 ### Bluetooth
@@ -222,6 +228,8 @@ Synchronise the profiles in firefox, but ignore the storage folder of the profil
 You can do the same on your windows home directory but you have to relink the relevant configuration files to their windows path:
 
 #### VSCode
+
+
 
 #### NeoVim
 
