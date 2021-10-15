@@ -150,7 +150,7 @@ alias torb=torbrowser-launcher
 alias unblock="sudo rfkill unblock 1"
 alias scan="iwctl station wlan0 scan"
 alias win="sudo mount /dev/nvme0n1p3 /mnt;cd /mnt/Documents\ and\ Settings"
-alias imt="cd ~/Documents/Documents/IMT\ Atlantique/Periode\ 7\ \&\ 8"
+alias imt="cd ~/Documents/IMT\ Atlantique/annee\ 2"
 
 # Important to make urls work correctly within commands (ex: mpsyt)
 unsetopt nomatch

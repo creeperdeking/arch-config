@@ -15,6 +15,9 @@ clear
 
 PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.0.0/bin
 
+# Wayland environment variable
+MOZ_ENABLE_WAYLAND=1
+
 export NNN_FIFO=/tmp/nnn.fifo
 
 export NNN_PLUG='f:finder;t:nmount;v:imgview;u:preview-tui;i:preview-tabbed'

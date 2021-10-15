@@ -30,6 +30,8 @@ set $sleep swaylock -f -c 000000 -i $HOME"/Pictures/creations/himanity 16.jpg"
 
 seat * hide_cursor 3000
 
+set $laptop eDP-1
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in 
@@ -37,7 +39,7 @@ seat * hide_cursor 3000
 #
 output * bg #000000 solid_color
 output "*" bg ~/Pictures/Wallpaper/cyberpunk.jpg fill
-output eDP-1 scale 2
+output $laptop scale 2
 #
 # Example configuration:
 #
