@@ -1,205 +1,313 @@
 #!/bin/bash
 
-set -x
-
 # Todo: importer automatiquement la configuration megasync
 
 # The basics and encryption are mostly based off this tutorial
 # <https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/>
 
-# Myhostname
+# hostname
 
-myhostname='tomorrowpc'
+source libinstall.sh
 
-# Se connecter a internet
-iwctl station wlan0 scan
-iwctl
+declare -A arr
 
-# Activate date server
-timedatectl set-ntp true
+arr[1,1]="Connect to the internet"
+arr[1,2]="Activate time server"
+arr[1,3]="Partition setup"
+arr[1,4]="Format main partition"
+arr[1,5]="Create EFI partition"
+arr[1,6]="Mount partitions"
+arr[1,7]="Genfstab"
+arr[1,8]="Install basic software"
+arr[1,9]="Chroot to Arch"
 
-# Créer les partitions
-# Number  Start   End     Size    File system  Name  Flags
-# 1      1049kB  512MB   511MB   fat32        efi   boot, esp
-# 2      512MB   1024GB  1024GB               arch
-parted
+arr[2,1]="Setting hostname"
+arr[2,2]="Mkinitcpio"
+arr[2,3]="Make tty1 green"
+arr[2,4]="Bootloader menu setup"
+arr[2,5]="Configure Pacman"
+arr[2,6]="Bootloader configuration"
+arr[2,7]="Setup timezone and locale"
+arr[2,8]="Install the necessary software"
+arr[2,9]="Don't ask for username on tty1"
+arr[2,10]="Add sudo privileges to the sudo group"
+arr[2,11]="Create my user, add him to the sudo group"
 
-# Formatter la partition principale
-cryptsetup luksFormat /dev/nvme0n1p2
-cryptsetup luksOpen /dev/nvme0n1p2 luks
+arr[3,1]="Set password"
+arr[3,2]="Set zsh as my default shell"
+arr[3,3]="Install yay"
+arr[3,4]="Clone all relevant config files"
+arr[3,5]="Install AUR Software"
+arr[3,6]="ssh setup"
+arr[3,7]="DHCP Configuration"
+arr[3,8]="Install ncpamixer"
+arr[3,9]="Activate services"
+arr[3,10]="Install VimPlug"
+arr[3,11]="remove root login"
+arr[3,12]="Unmount cleanly and reboot"
 
-pvcreate /dev/mapper/luks
-vgcreate vg0 /dev/mapper/luks
-lvcreate -s 100% vg0 -n root
-
-mkfs.ext4 -L root /dev/mapper/vg0-root
-
-# Créer la partition efi
-mkfs.vfat -F32 -n EFI /dev/
-
-# Monter les partitions
-mount /dev/mapper/vg0-root /mnt/
-mkdir /mnt/boot /mnt/home
-mount /dev/nvme0n1p1 /mnt/boot
-
-# Genfstab
-
-genfstab -U /mnt >> /mnt/etc/fstab
-echo 'tmpfs /tmp tmpfs defaults,noatime,mode=1777 0 0' >> /mnt/etc/fstab
+numphase=1
+numstep=1
+continuecount=1
 
 
-# Installer les premiers logiciels
+echo "==================== 1/3 - Installation Start ====================="
 
-pacstrap /mnt base linux linux-firmware man-db man-pages texinfo alsa-utils broadcom-wl cryptsetup diffutils dosfstools e2fsprogs edk2-shell efibootmgr alsa-utils b43-fwcutter ethtool exfatprogs fatresize gpm gptfdisk grml-zsh-config hdparm intel-ucode ipw2100-fw ipw2200-fw iw iwd less libusb-compat lynx memtest86+ mkinitcpio mtools openssh openssh reflector rsync sdparm smartmontools sof-firmware sudo systemd-resolvconf tcpdump testdisk usbutils usbmuxd usb_modeswitch wireless-regdb
+echo "\nWhat's your computer's name?"
+read -p "hostname:>" myhostname
+echo "\n"
 
-# Chroot vers Arch
-arch-chroot /mnt
+connectToInternet () {
+  iwctl station wlan0 scan
+  iwctl
+}
+step connectToInternet
 
-# ======================== Chrooted =====================
+activateTimeServer () {
+  timedatectl set-ntp true
+}
+step activateTimeServer
 
-# Setting hostname
-echo "$myhostname" > /etc/hostname
-echo '127.0.0.1	localhost' > /etc/hosts
-echo '::1	localhost' >> /etc/hosts
-echo "127.0.1.1	$myhostname.localdomain	$myhostname" >> /etc/hosts
+helpPartitionSetup () {
+  echo " = Suggested structure (Don't miss the Flags)"
+  echo " Number  Start   End     Size    File system  Name  Flags"
+  echo " 1      1049kB  512MB   511MB   fat32        efi   boot, esp"
+  echo " 2      512MB   1024GB  1024GB               arch"
+}
+partitionSetup () {
+  parted
+}
+step partitionSetup helpPartitionSetup
 
-# Mkinitcpio
+set -x
+lsblk
+set +x
+echo "\nWhat's the main linux partition's name?"
+read -p "main partition:>" mainpart
+echo "What's the boot partition?"
+read -p "boot partition:>" bootpart
+echo "\n"
 
-HOOKS=(base udev autodetect modconf block keyboard keymap encrypt lvm2 filesystems fsck)
-mkinitcpio -P
+formatMainPartition () {
+  cryptsetup luksFormat /dev/$mainpart
+  cryptsetup luksOpen /dev/$mainpart luks
 
-# Make tty1 green
-echo "export PS1="\033[1m"$PS1" >> /etc/environment
+  pvcreate /dev/mapper/luks
+  vgcreate vg0 /dev/mapper/luks
+  lvcreate -s 100% vg0 -n root
 
-# Bootloader menu setup
-bootctl --path=/boot install
-echo 'default arch' > /boot/loader/loader.conf
-echo 'console-mode 1' >> /boot/loader/loader.conf 
-echo 'timeout 3' >> /boot/loader/loader.conf
+  mkfs.ext4 -L root /dev/mapper/vg0-root
+}
+step formatMainPartition
 
-# Configure Pacman
+formatEFIPartition () {
+  mkfs.vfat -F32 -n EFI /dev/$bootpart
+}
+step formatEFIPartition
 
-echo "ILoveCandy" >> /etc/pacman.conf
-echo "[multilib]" >> /etc/pacman.conf
-echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-echo "Color" >> /etc/pacman.conf
-echo "ParallelDownloads = 5" >> /etc/pacman.conf
+mountPartitions () {
+  mount /dev/mapper/vg0-root /mnt/
+  mkdir /mnt/boot /mnt/home
+  mount /dev/$bootpart /mnt/boot
+}
+step mountPartitions
 
-# Bootloader configuration
-echo "title Arch Linux" > /boot/loader/entries/arch.conf
-echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
-echo "initrd /intel-ucode.img" >> /boot/loader/entries/arch.conf
-echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo "options cryptdevice=UUID=d0482a6c-a48d-4da0-94fb-45edb102e4e3:vg0 root=/dev/mapper/vg0-root rw intel_pstate=no_hwp" >> /boot/loader/entries/arch.conf
+execGenfstab () {
+  genfstab -U /mnt >> /mnt/etc/fstab
+  echo 'tmpfs /tmp tmpfs defaults,noatime,mode=1777 0 0' >> /mnt/etc/fstab
+}
+step execGenfstab
 
-# Setup timezone and locale
-ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
-hwclock --systohc
-echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
-locale-gen
-echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+installBasicSoftware () {
+  pacstrap /mnt base linux linux-firmware man-db man-pages texinfo alsa-utils broadcom-wl cryptsetup diffutils dosfstools e2fsprogs edk2-shell efibootmgr alsa-utils b43-fwcutter ethtool exfatprogs fatresize gpm gptfdisk grml-zsh-config hdparm intel-ucode ipw2100-fw ipw2200-fw iw iwd less libusb-compat lynx memtest86+ mkinitcpio mtools openssh openssh reflector rsync sdparm smartmontools sof-firmware sudo systemd-resolvconf tcpdump testdisk usbutils usbmuxd usb_modeswitch wireless-regdb
+}
+step installBasicSoftware
 
-# Install the necessary software
+chrootToArch () {
+  arch-chroot /mnt
+}
+step chrootToArch
 
-pacman -Syu bc acpi neovim autoconf automake awk sed neovim-symlinks bluez gcc patc
-h make bluez-utils tree zsh sway swaylock nftables mplayer mpv imv swayidle nnn git xorg-xrdb irssi htop firefox
-pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewi
-re-media-session xdg-desktop-portal-wlr ttf-nerd-fonts-symbols pipewire wofi
-## Hacking
-sudo pacman -Syu macchanger
-## Fun
-sudo pacman -Syu cowsay sl
-## Investigation
-sudo pacman -Syu perl-image-exiftool
-## System maintenance
-sudo pacman -Syu filelight
-## Icons
 
-## Media
-sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
-sudo chmod a+rx /usr/local/bin/youtube-dl
-sudo pacman -Syu mps-youtube
-## Install nnn plugin
-curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
-## Install zimfw
-curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+echo " ==================== 2/3 - Chroot environment ==================== "
 
-# Don't ask for username on tty1
+settingHostname () {
+  echo "$myhostname" > /etc/hostname
+  echo '127.0.0.1	localhost' > /etc/hosts
+  echo '::1	localhost' >> /etc/hosts
+  echo "127.0.1.1	$myhostname.localdomain	$myhostname" >> /etc/hosts
+}
+step settingHostname
 
-sed '/^"[Service]".*/a "ExecStart=-/sbin/agetty -n -o alexis %I"' /etc/systemd/system/getty.target.wants/getty@tty1
-.service
+execMkinitcpio () {
+  # todo : enregistrer les hooks au bon endroit
+  HOOKS=(base udev autodetect modconf block keyboard keymap encrypt lvm2 filesystems fsck)
+  mkinitcpio -P
+}
+step execMkinitcpio
 
-# Add sudo privileges to the sudo group
+makeTTY1Green () {
+  echo "export PS1="\033[1m"$PS1" >> /etc/environment
+}
+step makeTTY1Green
 
-echo "%sudo ALL=(ALL) ALL" >> /etc/sudoers
+bootloaderMenuSetup () {
+  bootctl --path=/boot install
+  echo 'default arch' > /boot/loader/loader.conf
+  echo 'console-mode 1' >> /boot/loader/loader.conf 
+  echo 'timeout 3' >> /boot/loader/loader.conf
+}
+step bootloaderMenuSetup
 
-# Create my user, add him to the sudo group
+configurePacman () {
+  echo "ILoveCandy" >> /etc/pacman.conf
+  echo "[multilib]" >> /etc/pacman.conf
+  echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+  echo "Color" >> /etc/pacman.conf
+  echo "ParallelDownloads = 5" >> /etc/pacman.conf
+}
+step configurePacman
 
-groupadd sudo
+bootloaderConfig () {
+  echo "title Arch Linux" > /boot/loader/entries/arch.conf
+  echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
+  echo "initrd /intel-ucode.img" >> /boot/loader/entries/arch.conf
+  echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
+  echo "options cryptdevice=UUID=d0482a6c-a48d-4da0-94fb-45edb102e4e3:vg0 root=/dev/mapper/vg0-root rw intel_pstate=no_hwp" >> /boot/loader/entries/arch.conf
+}
+step bootloaderConfig
 
-useradd -m alexis -G sudo
-su alexis
+setupTimeAndLocale () {
+  ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+  hwclock --systohc
+  echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
+  locale-gen
+  echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+}
+step setupTimeAndLocale
 
-# ===================== su user =======================
+installSoftware () {
+  pacman -Syu bc acpi neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock nftables mplayer mpv imv swayidle nnn git xorg-xrdb irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr ttf-nerd-fonts-symbols pipewire wofi
 
-# Set password
+  ## Hacking
+  sudo pacman -Syu macchanger
+  ## Fun
+  sudo pacman -Syu cowsay sl
+  ## Investigation
+  sudo pacman -Syu perl-image-exiftool
+  ## System maintenance
+  sudo pacman -Syu filelight
+  ## Icons
+  sudo pacman -Syu ttf-nerd-fonts-symbols
+  ## Media
+  sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
+  sudo chmod a+rx /usr/local/bin/youtube-dl
+  sudo pacman -Syu mps-youtube
+  ## Install nnn plugin
+  use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
+  curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+  ## Install zimfw
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+}
+step installSoftware
 
+dontAskUsername () {
+  sed '/^"[Service]".*/a "ExecStart=-/sbin/agetty -n -o alexis %I"' /etc/systemd/system/getty.target.wants/getty@tty1.service
+}
+step dontAskUsername
+
+setupSudoPrivilege () {
+  echo "%sudo ALL=(ALL) ALL" >> /etc/sudoers
+}
+setup setupSudoPrivilege
+
+echo "\nWhat user name do you want?"
+read -p "username-> " username
+setupAdminUser () {
+  groupadd sudo
+  useradd -m $username -G sudo
+  su $username
+}
+step setupAdminUser
+
+
+echo "===================== 3/3 - su "$username" ======================="
+
+echo "\n3.1 - Set password\n"
+set -x
 passwd
+set +x
 
-# Set zsh as my default shell
+
+echo "\n3.2 - Set zsh as my default shell\n"
+set -x
 chsh -s $(which zsh)
+set +x
 
-# Install yay
+
+echo "\n3.3 - Install yay\n"
+set -x
 mkdir -p ~/Documents/software
 cd ~/Documents/software
 sudo git clone https://aur.archlinux.org/yay-git.git
 cd yay-git
 makepkg -si
 cd ~
+set +x
 
-# Clone all relevant config files
+
+echo "\n3.4 - Clone all relevant config files\n"
+set -x
 git clone git@github.com:creeperdeking/arch-config.git
 cd arch-config
 git config core.worktree "../../"
 git reset --hard origin/main
+set +x
 
-# Install AUR Software
-yay -Syu megasync ncpamixer
+
+echo "\n3.5 - Install AUR Software\n"
+set -x
+yay -Syu megasync ncpamixer neovim-symlimks
 # Todo: copier la configuration de megasync
 # Synchronise Documents/
 # Ignore Documents/bin and Documents/software
 # Synchronise Pictures
+set +x
 
-# SSH setup
 
+echo "\n3.6 - SSH setup\n"
+set -x
 ssh-keygen -t ed25519 -C "alexis.gros99@gmail.com"
 cat ~/.ssh/id_ed25519.pub
+set +x
 
-# DHCP Configuration
 
+echo "\n3.7 - DHCP Configuration\n"
+set -x
 echo "[Match]" > /etc/systemd/network/20-wired.network
-echo "Name=enp0s20f0u3" >> /etc/systemd/network/20-wired.network
-echo "Name=enp0s20f0u2" >> /etc/systemd/network/20-wired.network
-echo "Name=enp0s20f0u1" >> /etc/systemd/network/20-wired.network
+echo "Name=*" >> /etc/systemd/network/20-wired.network
 echo "[Network]" >> /etc/systemd/network/20-wired.network
 echo "DHCP=yes" >> /etc/systemd/network/20-wired.network
 echo "[DHCP]" >> /etc/systemd/network/20-wired.network
 echo "RouteMetric=10" >> /etc/systemd/network/20-wired.network
 
 echo "[Match]" > /etc/systemd/network/25-wireless.network
-echo "Name=wlan0" >> /etc/systemd/network/25-wireless.network
+echo "Name=*" >> /etc/systemd/network/25-wireless.network
 echo "[Network]" >> /etc/systemd/network/25-wireless.network
 echo "DHCP=yes" >> /etc/systemd/network/25-wireless.network
 echo "[DHCP]" >> /etc/systemd/network/25-wireless.network
 echo "RouteMetric=20" >> /etc/systemd/network/25-wireless.network
+set +x
 
 
-# Install ncpamixer
-
+echo "\n3.8 - Install ncpamixer\n"
+set -x
 sudo yay -Syu ncpamixer grimshot wl-clipboard
+set +x
 
-# Activate services
 
+echo "\n3.9 - Activate services\n"
+set -x
 systemctl start systemd-resolved.service
 systemctl enable systemd-resolved.service
 
@@ -217,22 +325,30 @@ systemctl enable wl-copy
 
 sudo systemctl start nftables.service
 sudo systemctl enable nftables.service
+set +x
 
-# Correct mime type identification? /usr/share/applications/mimeinfo.cache
 
-# Install VimPlug
+echo "\n3.10 - Install VimPlug\n"
+set -x
 # [Vim Plug git](https://github.com/junegunn/vim-plug)
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-vim -cmd "PlugInstall"
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+vim --lmd "PlugInstall"
+set +x
 
-# Remove root login
 
+echo "\n3.11 - Remove root login\n"
+set -x
 sudo chsh -s "/bin/nologin"
+set +x
 
-# Unmount cleanly and reboot
 
+echo "\nInfo: Want correct mime type identification? look at /usr/share/applications/mimeinfo.cache \n"
+
+
+echo "\n3.12 - Unmount cleanly and reboot\n"
+set -x
 umount /mnt/home /mnt/boot
 umount /mnt
 reboot
-
+set +x
 
