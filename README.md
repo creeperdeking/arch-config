@@ -5,12 +5,10 @@ My personnalized arch configuration.
 
 Execute the script install.sh in .setup
 
-use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
-
 ## VS Code configuration
 #### VS Code configuration
 
-The VS code config file is included in the git repo, you will want to install the neovim extension. The green blue theme should be installed by default.
+You will want to install the neovim extension. 
 
 # Windows linking
 
@@ -45,6 +43,3 @@ wsl --set-default-version 2
 
 Got to the windows store and install Ubuntu 20.04 LTS
 
-## Basic software install
-
-First, use the commands above to install this git, then
