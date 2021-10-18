@@ -61,7 +61,7 @@ ExecStart=-/sbin/agetty -n -o alexis %I
 Firstv we need that software:
 
 ```
-sudo pacman -Syu bc acpi neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock swayidle nnn git xorg-xrdb irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
+sudo pacman -Syu bc acpi iproute2 neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock swayidle nnn git xorg-xrdb irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr pipewire
 ```
 
 ### Sway
@@ -98,9 +98,9 @@ Add line
 
 - Install yay
 
-- Install truetype gnu fonts
+- Install icons
 ```
-yay -Syu ttf-unifont
+sudo pacman -Syu ttf-nerd-fonts-symbols
 ```
 
 ### Firewall
@@ -174,7 +174,31 @@ cat ~/.ssh/id_ed25519.pub
 ### DNS resolution/dhcp setup
 
 
-Configure dhcp in /etc/systemd/... for each networking device
+Configure dhcp in /etc/systemd/... for each networking device: you can do something like:
+/etc/systemd/network/20-wired.network
+```
+[Match]
+Name=enp0s20f0u3
+Name=enp0s20f0u1
+
+[Network]
+DHCP=yes
+
+[DHCP]
+RouteMetric=10
+```
+
+/etc/systemd/network/25-wireless.network
+```
+[Match]
+Name=wlan0
+
+[Network]
+DHCP=yes
+
+[DHCP]
+RouteMetric=20
+```
 
 systemctl enable systemd-resolved.service
 

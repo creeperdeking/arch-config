@@ -14,5 +14,6 @@
     "telemetry.enableTelemetry": false,
     "window.menuBarVisibility": "toggle",
     "git.autofetch": true,
-    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\alexis\\scoop\\shims\\nvim.exe"
+    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\alexis\\scoop\\shims\\nvim.exe",
+    "explorer.confirmDelete": false
 }
