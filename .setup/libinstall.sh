@@ -28,6 +28,10 @@ showStepList () {
   echo ""
 }
 
+continuecount=0
+skipcount=0
+numstep=1
+
 # Execute a step, takes two parameters, plus one facultative
 # 1: The function to execute
 # 2: A facultative fonction that can be executed between the title and the
@@ -37,6 +41,7 @@ step () {
   if [ $skipcount -gt 0 ]
   then
     skipcount=$skipcount - 1
+    numstep=$numstep + 1
     return
   fi
 
@@ -58,6 +63,7 @@ step () {
   if [ $continuecount -gt 0 ]
   then
     continuecount=$continuecount - 1
+    numstep=$numstep + 1
     return
   fi
 
@@ -95,4 +101,5 @@ step () {
         ;;
     esac
   done
+  numstep=$numstep + 1
 }

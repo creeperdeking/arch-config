@@ -40,17 +40,12 @@ arr[3,4]="Clone all relevant config files"
 arr[3,5]="Install AUR Software"
 arr[3,6]="ssh setup"
 arr[3,7]="DHCP Configuration"
-arr[3,8]="Install ncpamixer"
-arr[3,9]="Activate services"
-arr[3,10]="Install VimPlug"
-arr[3,11]="remove root login"
-arr[3,12]="Unmount cleanly and reboot"
+arr[3,8]="Activate services"
+arr[3,9]="Install VimPlug"
+arr[3,10]="remove root login"
+arr[3,11]="Unmount cleanly and reboot"
 
 numphase=1
-numstep=1
-continuecount=1
-
-
 echo "==================== 1/3 - Installation Start ====================="
 
 echo "\nWhat's your computer's name?"
@@ -129,6 +124,7 @@ chrootToArch () {
 step chrootToArch
 
 
+numphase=2
 echo " ==================== 2/3 - Chroot environment ==================== "
 
 settingHostname () {
@@ -231,124 +227,110 @@ setupAdminUser () {
 step setupAdminUser
 
 
+numphase=3
 echo "===================== 3/3 - su "$username" ======================="
 
-echo "\n3.1 - Set password\n"
-set -x
-passwd
-set +x
-
+setPassword () {
+  passwd
+}
+step setPassword
 
 echo "\n3.2 - Set zsh as my default shell\n"
-set -x
-chsh -s $(which zsh)
-set +x
+setZshAsDefault () {
+  chsh -s $(which zsh)
+}
+step setZshAsDefault
 
+installYay () {
+  mkdir -p ~/Documents/software
+  cd ~/Documents/software
+  sudo git clone https://aur.archlinux.org/yay-git.git
+  cd yay-git
+  makepkg -si
+  cd ~
+}
+step installYay
 
-echo "\n3.3 - Install yay\n"
-set -x
-mkdir -p ~/Documents/software
-cd ~/Documents/software
-sudo git clone https://aur.archlinux.org/yay-git.git
-cd yay-git
-makepkg -si
-cd ~
-set +x
+cloneConfigFiles () {
+  git clone git@github.com:creeperdeking/arch-config.git
+  cd arch-config
+  git config core.worktree "../../"
+  git reset --hard origin/main
+}
+step cloneConfigFiles
 
+installAurSoftware () {
+  yay -Syu megasync grimshot wl-clipboard ncpamixer neovim-symlimks
+  # Todo: copier la configuration de megasync
+  # Synchronise Documents/
+  # Ignore Documents/bin and Documents/software
+  # Synchronise Pictures
+}
+step installAurSoftware
 
-echo "\n3.4 - Clone all relevant config files\n"
-set -x
-git clone git@github.com:creeperdeking/arch-config.git
-cd arch-config
-git config core.worktree "../../"
-git reset --hard origin/main
-set +x
+sshSetup () {
+  ssh-keygen -t ed25519 -C "alexis.gros99@gmail.com"
+  cat ~/.ssh/id_ed25519.pub
+}
+step sshSetup
 
+dhcpConfig () {
+  echo "[Match]" > /etc/systemd/network/20-wired.network
+  echo "Name=*" >> /etc/systemd/network/20-wired.network
+  echo "[Network]" >> /etc/systemd/network/20-wired.network
+  echo "DHCP=yes" >> /etc/systemd/network/20-wired.network
+  echo "[DHCP]" >> /etc/systemd/network/20-wired.network
+  echo "RouteMetric=10" >> /etc/systemd/network/20-wired.network
 
-echo "\n3.5 - Install AUR Software\n"
-set -x
-yay -Syu megasync ncpamixer neovim-symlimks
-# Todo: copier la configuration de megasync
-# Synchronise Documents/
-# Ignore Documents/bin and Documents/software
-# Synchronise Pictures
-set +x
+  echo "[Match]" > /etc/systemd/network/25-wireless.network
+  echo "Name=*" >> /etc/systemd/network/25-wireless.network
+  echo "[Network]" >> /etc/systemd/network/25-wireless.network
+  echo "DHCP=yes" >> /etc/systemd/network/25-wireless.network
+  echo "[DHCP]" >> /etc/systemd/network/25-wireless.network
+  echo "RouteMetric=20" >> /etc/systemd/network/25-wireless.network
+}
+step dhcpConfig
 
+activateServices () {
+  systemctl start systemd-resolved.service
+  systemctl enable systemd-resolved.service
 
-echo "\n3.6 - SSH setup\n"
-set -x
-ssh-keygen -t ed25519 -C "alexis.gros99@gmail.com"
-cat ~/.ssh/id_ed25519.pub
-set +x
+  systemctl start iwd.service
+  systemctl enable iwd.service
 
+  systemctl start bluetooth.service
+  systemctl enable bluetooth.service
 
-echo "\n3.7 - DHCP Configuration\n"
-set -x
-echo "[Match]" > /etc/systemd/network/20-wired.network
-echo "Name=*" >> /etc/systemd/network/20-wired.network
-echo "[Network]" >> /etc/systemd/network/20-wired.network
-echo "DHCP=yes" >> /etc/systemd/network/20-wired.network
-echo "[DHCP]" >> /etc/systemd/network/20-wired.network
-echo "RouteMetric=10" >> /etc/systemd/network/20-wired.network
+  systemctl start systemd-timesyncd.service
+  systemctl enable systemd-timesyncd.service
 
-echo "[Match]" > /etc/systemd/network/25-wireless.network
-echo "Name=*" >> /etc/systemd/network/25-wireless.network
-echo "[Network]" >> /etc/systemd/network/25-wireless.network
-echo "DHCP=yes" >> /etc/systemd/network/25-wireless.network
-echo "[DHCP]" >> /etc/systemd/network/25-wireless.network
-echo "RouteMetric=20" >> /etc/systemd/network/25-wireless.network
-set +x
+  systemctl start wl-copy
+  systemctl enable wl-copy
 
+  sudo systemctl start nftables.service
+  sudo systemctl enable nftables.service
+}
+step activateServices
 
-echo "\n3.8 - Install ncpamixer\n"
-set -x
-sudo yay -Syu ncpamixer grimshot wl-clipboard
-set +x
+installVimPlug () {
+  # [Vim Plug git](https://github.com/junegunn/vim-plug)
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  vim --lmd "PlugInstall"
+}
+step installVimPlug
 
-
-echo "\n3.9 - Activate services\n"
-set -x
-systemctl start systemd-resolved.service
-systemctl enable systemd-resolved.service
-
-systemctl start iwd.service
-systemctl enable iwd.service
-
-systemctl start bluetooth.service
-systemctl enable bluetooth.service
-
-systemctl start systemd-timesyncd.service
-systemctl enable systemd-timesyncd.service
-
-systemctl start wl-copy
-systemctl enable wl-copy
-
-sudo systemctl start nftables.service
-sudo systemctl enable nftables.service
-set +x
-
-
-echo "\n3.10 - Install VimPlug\n"
-set -x
-# [Vim Plug git](https://github.com/junegunn/vim-plug)
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-vim --lmd "PlugInstall"
-set +x
-
-
-echo "\n3.11 - Remove root login\n"
-set -x
-sudo chsh -s "/bin/nologin"
-set +x
-
+removeRootLogin () {
+  sudo chsh -s "/bin/nologin"
+}
+step removeRootLogin
 
 echo "\nInfo: Want correct mime type identification? look at /usr/share/applications/mimeinfo.cache \n"
 
+exitUnmount () {
+  exit
+  umount /mnt/home /mnt/boot
+  umount /mnt
+}
+step exitUnmount
 
-echo "\n3.12 - Unmount cleanly and reboot\n"
-set -x
-umount /mnt/home /mnt/boot
-umount /mnt
-reboot
-set +x
-
+echo "Archlinux is now fully setup, you just have to type reboot"
