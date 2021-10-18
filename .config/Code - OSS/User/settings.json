@@ -15,5 +15,6 @@
     "window.menuBarVisibility": "toggle",
     "git.autofetch": true,
     "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\alexis\\scoop\\shims\\nvim.exe",
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false
 }

@@ -17,6 +17,15 @@ PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.
 
 # Wayland environment variable
 MOZ_ENABLE_WAYLAND=1
+MOZ_ENABLE_WAYLAND=1
+QT_QPA_PLATEFORM=wayland-egl
+# GDK_BACKEND=wayland # Breaks apps?
+XDG_CURRENT_DESKTOP=sway
+XDG_SESSION_TYPE=wayland
+WLR_DRM_NO_ATOMIC=1
+QT_QPA_PLATFORM=xcb
+
+DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export NNN_FIFO=/tmp/nnn.fifo
 

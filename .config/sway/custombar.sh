@@ -31,7 +31,7 @@ do
 	BRIGHTNESS=$PRE"  $(echo $(bc -l <<< "$(brightnessctl g)/$(brightnessctl m)*100") | awk '{printf "%2d", $1+0.5;}')% "$COL'#bbccaa'$CER
 	VOL=$PRE"  $(pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' | awk  '{printf "%2d", $0;}')% "$COL'#bbccaa'$CER
 	HACKINGTIME=$PRE"$(date +' %d/%m/%Y  %k:%M ')"$COL'#aaccbb'$CER
-	IP=$PRE" $(ip -o addr show up primary scope global | read -r num dev fam addr rest; echo "${dev%} ${addr%}" ) "$COL'#aaccbb'$CER
+	IP=$PRE" $(ip route | grep '^default' | read -r def via add0 d dev p a s addr m mask; echo "${dev%} ${addr%}/${mask%}" ) "$COL'#aaccbb'$CER
 	CPU=$PRE"  $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)* id.*/\1/" | awk '{print 100 - $1}' | awk  '{printf "%4.1f%", $0;}')  $(acpi -t | awk '{print $(NF-2)}')°C "$COL'#ccbbaa'$CER
 	echo "[$IP,$CPU,$DISK,$RAM,$BATTERY,$VOL,$BRIGHTNESS,$HACKINGTIME]," || exit 1
 	sleep 0.5s;
