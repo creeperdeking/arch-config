@@ -16,5 +16,7 @@
     "git.autofetch": true,
     "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\alexis\\scoop\\shims\\nvim.exe",
     "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true
 }
