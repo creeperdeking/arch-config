@@ -111,8 +111,27 @@ showPrompt () {
 
 }
 
+addStageName () {
+  # Ignore function if asked
+  if [ "$namesInitialisation" == "false" ]
+  then
+    return
+  fi
+  stepNames+=( "[$1]" )
+}
+
+addStepName () {
+  # Ignore function if asked
+  if [ "$namesInitialisation" == "false" ]
+  then
+    return
+  fi
+  stepNames+=( "$1" )
+}
+
 stepNoPrompt () {
-  if [ (namesInitialisation == "true") ]
+  # Ignore function if asked
+  if [ "$namesInitialisation" == "true" ]
   then
     return
   fi
@@ -128,7 +147,8 @@ skipcount=0
 # 2: A facultative fonction that can be executed between the title and the
 # execution of the main function
 step () {
-  if [ (namesInitialisation == "true") ]
+  # Ignore function if asked
+  if [ "$namesInitialisation" == "true" ]
   then
     return
   fi
@@ -185,7 +205,7 @@ step () {
   set +x
   echo ""
 
-  # Check if we should just continue without yet showing the prompt
+  # Check if we should just continue without asking
   if [ $continuecount -gt 1 ]
   then
     continuecount=$((continuecount-1))

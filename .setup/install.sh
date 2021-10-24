@@ -17,8 +17,8 @@ function setupProgram () {
   step activateTimeServer
   stepNames+="Partition setup"
   step partitionSetup helpPartitionSetup
-  stepNoPrompt askPartitionName
   stepNames+="Format main partition"
+  stepNoPrompt askPartitionName
   step formatMainPartition
   stepNames+="Format EFI partition"
   step formatEFIPartition

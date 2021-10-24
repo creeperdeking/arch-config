@@ -6,76 +6,46 @@
 # <https://blog.deimos.fr/2020/03/29/arch-linux-install-with-uefi-and-encrypted-disk/>
 
 source libinstall.sh
+source testfunc.sh
 
 
-stepNames=(
-  "[Installation Start]"
+setupProgram () {
+  addStageName "Installation Start"
 
-  "Connect to the internet"
-  "Activate time server"
-  "Partition setup"
+  addStepName "Connect to the internet"
+  stepNoPrompt askHostname
+  step connectToInternet
+  addStepName "Activate time server"
+  step activateTimeServer
+  addStepName "Partition setup"
+  step partitionSetup helpPartitionSetup
 
-  "[Chroot environment]"
+  addStageName "Chroot environment"
 
-  "Setting hostname"
-  "Mkinitcpio"
+  addStepName "Setting hostname"
+  step settingHostname
+  addStepName "Mkinitcpio"
+  step execMkinitcpio
 
-  "[su username]"
+  addStageName "su username"
 
-  "Set password"
-)
-
-
-showStepList
-showPrompt
-step
-
-echo "What's your computer's name?"
-read -p "hostname:>" myhostname
-
-connectToInternet () {
-  iwctl station wlan0 scan
-  iwctl
+  addStepName "Set password"
+  step setPassword
 }
-step connectToInternet
 
-activateTimeServer () {
-  echo "[activate]"
+
+main () {
+  namesInitialisation="true"
+  setupProgram
+
+  showStepList
+  showPrompt
+  step
+
+  namesInitialisation="false"
+  setupProgram
+
+  echo "Archlinux is now fully setup, you just have to type reboot"
 }
-step activateTimeServer
 
-helpPartitionSetup () {
-  echo "(info) Suggested structure (Don't miss the Flags)"
-  echo " Number  Start   End     Size    File system  Name  Flags"
-  echo " 1      1049kB  512MB   511MB   fat32        efi   boot, esp"
-  echo " 2      512MB   1024GB  1024GB               arch"
-}
-partitionSetup () {
-  parted
-}
-step partitionSetup helpPartitionSetup
-
-#### ================
-
-settingHostname () {
-  echo "$myhostname" > /tmp/hostname
-  echo '127.0.0.1	localhost' > /tmp/hosts
-  echo '::1	localhost' >> /tmp/hosts
-  echo "127.0.1.1	$myhostname.localdomain	$myhostname" >> /tmp/hosts
-}
-step settingHostname
-
-execMkinitcpio () {
-  # todo : enregistrer les hooks au bon endroit
-  mkinitcpio -P
-}
-step execMkinitcpio
-
-#### ===============
-
-setPassword () {
-  echo "password"
-}
-step setPassword
-
-echo "Archlinux is now fully setup, you just have to type reboot"
+main

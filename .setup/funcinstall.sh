@@ -191,7 +191,7 @@ cloneConfigFiles () {
 }
 
 installAurSoftware () {
-  yay -Syu megasync grimshot wl-clipboard ncpamixer neovim-symlimks
+  yay -Syu code-wayland megasync grimshot wl-clipboard ncpamixer neovim-symlimks
   # Todo: copier la configuration de megasync
   # Synchronise Documents/
   # Ignore Documents/bin and Documents/software
