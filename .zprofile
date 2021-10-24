@@ -31,6 +31,8 @@ export NNN_FIFO=/tmp/nnn.fifo
 
 export NNN_PLUG='f:finder;t:nmount;v:imgview;u:preview-tui;i:preview-tabbed'
 
+bluetoothctl power on
+
 if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
 #    echo ""
 #    sleep 1
@@ -42,4 +44,5 @@ if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
 
     exec sway
 fi
+
 
