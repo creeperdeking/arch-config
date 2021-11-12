@@ -222,6 +222,9 @@ Plug 'arcticicestudio/nord-vim'
 
 Plug 'Yggdroot/indentLine'
 
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 

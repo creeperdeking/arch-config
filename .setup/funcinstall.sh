@@ -125,7 +125,35 @@ setupTimeAndLocale () {
 }
 
 installSoftware () {
-  pacman -Syu bc acpi neovim autoconf automake awk sed neovim-symlinks bluez gcc patch make bluez-utils tree zsh sway swaylock nftables mplayer mpv imv swayidle nnn git xorg-xrdb irssi htop firefox pulseaudio pulsemixer alacritty pulseaudio-alsa lib32-libpulse lib32-alsa-plugins pipewire-media-session xdg-desktop-portal-wlr ttf-nerd-fonts-symbols pipewire wofi
+  ## X Legaxy (Beurk!)
+  pacman -Syu xorg-xrdb
+
+  ## Programmming
+  sudo pacman -Syu gcc autoconf make automake git
+
+  ## Commandline paradise
+  sudo pacman -Syu patch zsh acpi tree awk sed nnn neovim neovim-symlinks rtorrent irssi mlocate alacritty htop
+  ### Install nnn plugin
+  use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
+  curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+  ### Install zimfw
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+
+  ## Bluetooth
+  sudo pacman -Syu bluez bluez-utils
+  ## Computer security
+  sudo pacman -Syu nftables
+
+  ## ??
+  sudo pacman -Syu bc
+
+  ## Screen Sharing
+  sudo pacman -Syu pipewire pipewire-media-session xdg-desktop-portal-wlr
+
+  ## Sway
+  sudo pacman -Syu sway swaylock wofi swayidle dunst
+  ## Fonts
+  sudo pacman -Syu ttf-nerd-fonts-symbols
 
   ## Hacking
   sudo pacman -Syu macchanger
@@ -138,14 +166,13 @@ installSoftware () {
   ## Icons & fonts
   sudo pacman -Syu ttf-nerd-fonts-symbols gnu-free-fonts
   ## Media
+  sudo pacman -Syu mps-youtube mplayer mpv imv
+  sudo pacnan -Syu pulseaudio pulsemixer pulseaudio-alsa lib32-libpulse lib32-alsa-plugins
   sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
   sudo chmod a+rx /usr/local/bin/youtube-dl
-  sudo pacman -Syu mps-youtube
-  ## Install nnn plugin
-  use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
-  curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
-  ## Install zimfw
-  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+
+  ## Basic software
+  sudo pacman -Syu firefox
 }
 
 dontAskUsername () {
@@ -191,11 +218,27 @@ cloneConfigFiles () {
 }
 
 installAurSoftware () {
-  yay -Syu code-wayland megasync grimshot wl-clipboard ncpamixer neovim-symlimks
+  yay -Syu code-wayland signal-desktop megasync grimshot wl-clipboard ncpamixer neovim-symlimks
   # Todo: copier la configuration de megasync
   # Synchronise Documents/
   # Ignore Documents/bin and Documents/software
   # Synchronise Pictures
+}
+
+configureSignalForSway () {
+  sudo echo "[Desktop Entry]" > /usr/share/applications/signal-desktop.desktop
+  sudo echo "Type=Application" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Name=Signal" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Comment=Signal - Private Messenger" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Comment[de]=Signal - Sicherer Messenger" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Icon=signal-desktop" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Exec=signal-desktop --use-tray-icon --enable-features=UseOzonePlatform --ozone-platform=wayland -- %u" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Terminal=false" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Categories=Network;InstantMessaging;" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "StartupWMClass=Signal" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "MimeType=x-scheme-handler/sgnl;" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "Keywords=sgnl;chat;im;messaging;messenger;sms;security;privat;" >> /usr/share/applications/signal-desktop.desktop
+  sudo echo "X-GNOME-UsesNotifications=true" >> /usr/share/applications/signal-desktop.desktop
 }
 
 sshSetup () {

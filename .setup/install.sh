@@ -67,6 +67,8 @@ function setupProgram () {
   step setZshAsDefault
   stepNames+="Install yay"
   step installYay
+  stepNames+="Configure Signal for Wayland"
+  step configureSignalForSway
   stepNames+="Clone all relevant config files"
   step cloneConfigFiles
   stepNames+="Install AUR Software"

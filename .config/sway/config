@@ -24,7 +24,7 @@ set $shutdown shutdown 0
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be
 # opened on the original workspace that the command was run on.
-set $menu wofi --show run
+set $menu wofi --show=drun --show=drun --lines=5 --prompt=""
 
 set $sleep swaylock -f -c 000000 -i $HOME"/Pictures/creations/himanity 16.jpg"
 
@@ -34,44 +34,42 @@ set $laptop eDP-1
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in 
-# /usr/share/backgrounds/sway/)
-#
-output * bg #000000 solid_color
-output "*" bg ~/Pictures/Wallpaper/cyberpunk.jpg fill
+
+#output eDP-1 bg '#000000' solid_color
+output "*" bg ~/Pictures/Wallpaper/moon.png fill
 output $laptop scale 2
-#
+
 # Example configuration:
 #
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-#
-#
+
+
 ### Borderless configuration
 default_border pixel 1
 
 # class                 border  bground text    indicator child_border
- client.focused          #00aa00 #000000 #69FF56 #000000   #003300
- client.focused_inactive #000000 #5F676A #FFFFFF #000000   #000000
- client.unfocused        #000000 #222222 #888888 #000000   #000000
- client.urgent           #000000 #900000 #FFFFFF #000000   #000000
- client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #000000
+client.focused          #00aa00 #000000 #69FF56 #000000   #003300
+client.focused_inactive #000000 #5F676A #FFFFFF #000000   #000000
+client.unfocused        #000000 #222222 #888888 #000000   #000000
+client.urgent           #000000 #900000 #FFFFFF #000000   #000000
+client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #000000
 
- client.background       #FFFFFF
+client.background       #FFFFFF
 
 
 # Names
- set $ws1 "1qutebrowser"
- set $ws2 "2terminal"
- set $ws3 "3terminal"
- set $ws4 "4newsboat"
- set $ws5 "5ncmpcpp"
- set $ws6 "6ranger"
- set $ws7 "7evince"
- set $ws8 "8latex"
- set $ws9 "9claws"
- set $ws10 "0"
+set $ws1 "1qutebrowser"
+set $ws2 "2terminal"
+set $ws3 "3terminal"
+set $ws4 "4newsboat"
+set $ws5 "5ncmpcpp"
+set $ws6 "6ranger"
+set $ws7 "7evince"
+set $ws8 "8latex"
+set $ws9 "9claws"
+set $ws10 "0"
 
 ### Clipman
 
@@ -81,13 +79,12 @@ exec wl-paste -t text --watch clipman store
 #
 # Example configuration:
 
-#output eDP-1 bg '#000000' solid_color
 
- exec swayidle -w \
-          timeout 300 $sleep \
-          timeout 600 'swaymsg "output * dpms off"' \
-            resume 'swaymsg "output * dpms on"' \
-          before-sleep $sleep
+exec swayidle -w \
+        timeout 300 $sleep \
+        timeout 600 'swaymsg "output * dpms off"' \
+          resume 'swaymsg "output * dpms on"' \
+        before-sleep $sleep
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -114,9 +111,9 @@ input type:touchpad {
   scroll_factor 0.5
 }
 
-   input type:pointer {
-	pointer_accel -0
-   }
+input type:pointer {
+  pointer_accel -0
+}
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
@@ -125,6 +122,12 @@ input type:touchpad {
 #
 # Basics:
 #
+
+bindsym $mod+Shift+Left output $laptop transform 90 anticlockwise
+bindsym $mod+Shift+Right output $laptop transform 90 clockwise
+bindsym $mod+Shift+Up output $laptop transform 180 clockwise
+bindsym $mod+Shift+Down output $laptop transform 180 clockwise
+
 
 bindsym $mod+comma exec grimshot copy area
 
@@ -175,23 +178,12 @@ bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
 
-
-# Or use $mod+[up|down|left|right]
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
 # Move the focused window with the same, but add Shift
 bindsym $mod+Shift+$left move left
 bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
-# Ditto, with arrow keys
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+
 #
 # Workspaces:
 #
@@ -265,17 +257,10 @@ mode "resize" {
     # left will shrink the containers width
     # right will grow the containers width
     # up will shrink the containers height
-    # down will grow the containers height
     bindsym $left resize shrink width 10px
     bindsym $down resize grow height 10px
     bindsym $up resize shrink height 10px
     bindsym $right resize grow width 10px
-
-    # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
 
     # Return to default mode
     bindsym Return mode "default"
@@ -291,7 +276,7 @@ bar {
     bindsym button1 nop
     position bottom
     mode hide
-    modifier $mod    
+    modifier $mod
     height 22
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
@@ -308,12 +293,6 @@ bar {
         urgent_workspace   #2F343A #900000 #FFFFFF
         binding_mode       #2F343A #900000 #FFFFFF
     }
-
-    #colors {
-    #    statusline #ffffff
-    #    background #323232
-    #    inactive_workspace #323232 #111111 #9e9e9e
-    #}
 }
 
 include /etc/sway/config.d/*
@@ -330,24 +309,24 @@ exec blueberry-tray
 
 workspace 10
 
-exec firefox -new-tab https://open.spotify.com/ -P Misc
-exec firefox -new-tab https://discord.com/login -P Misc
-exec firefox -new-tab https://web.whatsapp.com/ -P Misc
-exec firefox -new-tab https://www.messenger.com/t/1539233009472515 -P Misc
-exec firefox -new-tab https://mail.google.com/mail/u/0/#inbox -P Misc
-exec firefox -new-tab https://z.imt.fr/zimbra/ -P Misc
-exec firefox -new-tab https://webmail.intranet.edf.com/my.policy -P Misc
+#exec firefox -new-tab https://www.messenger.com/t/1539233009472515 -P Misc
+exec firefox -P Misc -new-tab https://mail.google.com/mail/u/0/#inbox \
+  -new-tab https://open.spotify.com/ \
+  -new-tab https://discord.com/login \
+  -new-tab https://web.whatsapp.com/ \
+  -new-tab https://z.imt.fr/zimbra/ \
+  -new-tab https://webmail.intranet.edf.com/my.policy \
+  -new-tab https://calendar.google.com
 
 workspace 9
 
-exec alacritty -e sh -c "mpsyt pl https://www.youtube.com/playlist?list=PLiVs_ojBPhdkPlZVoB3y-8fxkddimQ-il; zsh" 
+#exec alacritty -e sh -c "mpsyt pl https://www.youtube.com/playlist?list=PLiVs_ojBPhdkPlZVoB3y-8fxkddimQ-il; zsh"
 
 workspace 1
 
-exec firefox 
+exec firefox
 
 workspace 2
 
 exec alacritty -e sh -c "sudo pacman -Syu; arch-audit; zsh"
-
 
