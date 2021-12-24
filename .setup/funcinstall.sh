@@ -263,23 +263,37 @@ dhcpConfig () {
 }
 
 activateServices () {
-  systemctl start systemd-resolved.service
-  systemctl enable systemd-resolved.service
+  sudo systemctl enable systemd-resolved.service
+  sudo systemctl start systemd-resolved.service
 
-  systemctl start iwd.service
-  systemctl enable iwd.service
+  sudo systemctl enable iwd.service
+  sudo systemctl start iwd.service
 
-  systemctl start bluetooth.service
-  systemctl enable bluetooth.service
+  sudo systemctl enable bluetooth.service
+  sudo systemctl start bluetooth.service
 
-  systemctl start systemd-timesyncd.service
-  systemctl enable systemd-timesyncd.service
+  sudo systemctl enable systemd-timesyncd.service
+  sudo systemctl start systemd-timesyncd.service
 
-  systemctl start wl-copy
-  systemctl enable wl-copy
+  sudo systemctl enable wl-copy
+  sudo systemctl start wl-copy
 
-  sudo systemctl start nftables.service
   sudo systemctl enable nftables.service
+  sudo systemctl start nftables.service
+}
+
+createLowBatteryPopup () {
+  sudo echo "#!/bin/bash" > /usr/bin/check-battery.sh
+  sudo echo 'BATTINFO=`acpi -b`' >> /usr/bin/check-battery.sh
+  sudo echo 'if [[ `echo $BATTINFO | grep Discharging` && `echo $BATTINFO | cut -f 4 -d " " | cut -f 1 -d "%"` < 20 ]] ; then' >> /usr/bin/check-battery.sh
+  sudo echo 'notify-send "Low Battery!" "$BATTINFO"' >> /usr/bin/check-battery.sh
+  sudo echo "fi" >> /usr/bin/check-battery.sh
+}
+
+createSpotifyConfig () {
+  yay -Syu spotify-tui
+  mkdir "~/.cache/spotifyd"
+  sudo pacman -Syu spotifyd
 }
 
 installVimPlug () {

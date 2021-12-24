@@ -14,6 +14,10 @@ You will want to install the neovim extension.
 
 You can do the same on your windows home directory but you have to relink the relevant configuration files to their windows path:
 
+# Firefox and spyware
+
+https://spyware.neocities.org/articles/firefox.html
+
 #### NeoVim
 
 ```

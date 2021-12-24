@@ -37,7 +37,7 @@ set softtabstop=2
 
 let mapleader=","
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 "set mouse=n " Accept mouse inputs
 

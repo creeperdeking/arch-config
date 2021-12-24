@@ -20,7 +20,7 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term alacritty
-set $shutdown shutdown 0
+set $shutdown poweroff
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be
 # opened on the original workspace that the command was run on.
@@ -310,13 +310,12 @@ exec blueberry-tray
 workspace 10
 
 #exec firefox -new-tab https://www.messenger.com/t/1539233009472515 -P Misc
-exec firefox -P Misc -new-tab https://mail.google.com/mail/u/0/#inbox \
-  -new-tab https://open.spotify.com/ \
-  -new-tab https://discord.com/login \
-  -new-tab https://web.whatsapp.com/ \
-  -new-tab https://z.imt.fr/zimbra/ \
-  -new-tab https://webmail.intranet.edf.com/my.policy \
-  -new-tab https://calendar.google.com
+exec firefox -P Misc -new-tab -url "https://mail.google.com/mail/u/0/#inbox" \
+  -new-tab -url https://discord.com/login \
+  -new-tab -url https://web.whatsapp.com/ \
+  -new-tab -url https://z.imt.fr/zimbra/ \
+  -new-tab -url https://webmail.intranet.edf.com/my.policy \
+  -new-tab -url https://calendar.google.com
 
 workspace 9
 
