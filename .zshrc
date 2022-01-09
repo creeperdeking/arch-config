@@ -5,6 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+
 # --------------- My configuration --------------
 
 
@@ -243,3 +244,8 @@ fi
 
 eval "$(pyenv init -)"
 eval "$(pyenv init -)"
+
+
+# --------------------------------
+
+p10k finalize
