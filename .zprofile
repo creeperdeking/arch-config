@@ -29,7 +29,8 @@ DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export NNN_FIFO=/tmp/nnn.fifo
 
-export NNN_PLUG='f:finder;t:nmount;v:imgview;u:preview-tui;i:imgview'
+#export NNN_PLUG='f:finder;t:nmount;v:imgview;u:preview-tui;i:imgview'
+export NNN_PLUG='f:finder;t:nmount;v:preview-tui;i:imgview'
 
 bluetoothctl power on
 
@@ -55,3 +56,4 @@ eval "$(pyenv init --path)"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
+

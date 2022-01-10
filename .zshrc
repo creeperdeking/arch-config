@@ -223,7 +223,7 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@" -e -P preview-tui
+    nnn "$@" -e
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
@@ -249,3 +249,6 @@ eval "$(pyenv init -)"
 # --------------------------------
 
 p10k finalize
+alsi
+alias tmux="TERM=screen-256color-bce tmux"
+PATH=$PATH:~/Documents/bin
