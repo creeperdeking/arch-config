@@ -125,8 +125,8 @@ setupTimeAndLocale () {
 }
 
 installSoftware () {
-  ## X Legaxy (Beurk!)
-  pacman -Syu xorg-xrdb
+  ## Install X11 disgusting tools (I won... But at what cost?)
+  pacman -Syu xorg-xdpyinfo xorg-xinput xorg-xinit xorg-server xorg-server-utils xclip xorg-xrdb
 
   ## Programmming
   sudo pacman -Syu gcc autoconf make automake git
@@ -134,45 +134,53 @@ installSoftware () {
   ## Commandline paradise
   sudo pacman -Syu patch zsh acpi tree awk sed nnn neovim neovim-symlinks rtorrent irssi mlocate alacritty htop
   ### Install nnn plugin
-  use tmux when using nnn to have access to the shortcut ;u it will show in a tmux pane infos about the file you are hovering on.
   curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
   ### Install zimfw
   curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
+  ### Console sugar
+  sudo pacman -S sxiv zathura
+
   ## Bluetooth
-  sudo pacman -Syu bluez bluez-utils
+  sudo pacman -S bluez bluez-utils
   ## Computer security
-  sudo pacman -Syu nftables
+  sudo pacman -S nftables
 
   ## ??
-  sudo pacman -Syu bc
+  sudo pacman -S bc
 
   ## Screen Sharing
-  sudo pacman -Syu pipewire pipewire-media-session xdg-desktop-portal-wlr
+  sudo pacman -S pipewire pipewire-media-session xdg-desktop-portal-wlr
 
   ## Sway
-  sudo pacman -Syu sway swaylock wofi swayidle dunst
+  #sudo pacman -S sway swaylock wofi swayidle dunst
   ## Fonts
-  sudo pacman -Syu ttf-nerd-fonts-symbols
+  sudo pacman -S ttf-nerd-fonts-symbols
 
   ## Hacking
-  sudo pacman -Syu macchanger
+  sudo pacman -S macchanger
   ## Fun
-  sudo pacman -Syu cowsay sl
+  sudo pacman -S cowsay sl
   ## Investigation
-  sudo pacman -Syu perl-image-exiftool
+  sudo pacman -S perl-image-exiftool
   ## System maintenance
-  sudo pacman -Syu filelight
+  sudo pacman -S filelight
   ## Icons & fonts
-  sudo pacman -Syu ttf-nerd-fonts-symbols gnu-free-fonts
+  sudo pacman -S ttf-nerd-fonts-symbols gnu-free-fonts
   ## Media
-  sudo pacman -Syu mps-youtube mplayer mpv imv
-  sudo pacnan -Syu pulseaudio pulsemixer pulseaudio-alsa lib32-libpulse lib32-alsa-plugins
+  sudo pacman -S mps-youtube mplayer mpv imv feh
+  sudo pacnan -S pulseaudio pulsemixer pulseaudio-alsa lib32-libpulse lib32-alsa-plugins
   sudo wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl
   sudo chmod a+rx /usr/local/bin/youtube-dl
 
   ## Basic software
-  sudo pacman -Syu firefox
+  sudo pacman -S firefox
+
+
+
+  mkdir -p ~/Documents/software
+
+
 }
 
 dontAskUsername () {
@@ -218,7 +226,9 @@ cloneConfigFiles () {
 }
 
 installAurSoftware () {
-  yay -Syu code-wayland signal-desktop megasync grimshot wl-clipboard ncpamixer neovim-symlimks
+  yay -Syu alsi signal-desktop megasync wl-clipboard neovim-symlimks
+  # Mindmaster
+
   # Todo: copier la configuration de megasync
   # Synchronise Documents/
   # Ignore Documents/bin and Documents/software
@@ -294,6 +304,8 @@ createSpotifyConfig () {
   yay -Syu spotify-tui
   mkdir "~/.cache/spotifyd"
   sudo pacman -Syu spotifyd
+  systemctl --user start spotifyd.service
+  systemctl --user enable spotifyd.service
 }
 
 installVimPlug () {
