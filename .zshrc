@@ -249,6 +249,6 @@ eval "$(pyenv init -)"
 # --------------------------------
 
 p10k finalize
-alsi
+alsi --normal=blue --bold=green
 alias tmux="TERM=screen-256color-bce tmux"
 PATH=$PATH:~/Documents/bin

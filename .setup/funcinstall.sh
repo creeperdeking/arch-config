@@ -113,7 +113,7 @@ bootloaderConfig () {
   echo "linux /vmlinuz-linux" >> /boot/loader/entries/arch.conf
   echo "initrd /intel-ucode.img" >> /boot/loader/entries/arch.conf
   echo "initrd /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-  echo "options cryptdevice=UUID=d0482a6c-a48d-4da0-94fb-45edb102e4e3:vg0 root=/dev/mapper/vg0-root rw intel_pstate=no_hwp" >> /boot/loader/entries/arch.conf
+  echo "options cryptdevice=UUID=d0482a6c-a48d-4da0-94fb-45edb102e4e3:vg0 root=/dev/mapper/vg0-root rw quiet loglevel=3 intel_pstate=no_hwp" >> /boot/loader/entries/arch.conf
 }
 
 setupTimeAndLocale () {
@@ -122,6 +122,7 @@ setupTimeAndLocale () {
   echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
   locale-gen
   echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+
 }
 
 installSoftware () {
@@ -132,9 +133,10 @@ installSoftware () {
   sudo pacman -Syu gcc autoconf make automake git
 
   ## Commandline paradise
-  sudo pacman -Syu patch zsh acpi tree awk sed nnn neovim neovim-symlinks rtorrent irssi mlocate alacritty htop
-  ### Install nnn plugin
+  sudo pacman -Syu patch zsh tar unzip acpi tree awk sed tmux nnn neovim neovim-symlinks rtorrent irssi mlocate alacritty htop
+  ### Install nnn plugin and dependencies
   curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh
+  sudo pacmsn -S mediainfo
   ### Install zimfw
   curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
@@ -203,6 +205,8 @@ setPassword () {
 
 setTimeToLocalTime () {
   timedatectl set-local-rtc 1 --adjust-system-clock
+  # Also set locale
+  sudo localectl set-x11-keymap us "" intl
 }
 
 setZshAsDefault () {
