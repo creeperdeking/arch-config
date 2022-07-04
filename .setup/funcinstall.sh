@@ -3,15 +3,6 @@ askHostName () {
   read -p "hostname:>" myhostname
 }
 
-askPartitionName () {
-  set -x
-  lsblk
-  set +x
-  echo "\nWhat's the main linux partition's name?"
-  read -p "main partition:>" mainpart
-  echo "What's the boot partition?"
-  read -p "boot partition:>" bootpart
-}
 
 askUserName () {
   echo "\nWhat user name do you want?"
@@ -37,8 +28,19 @@ helpPartitionSetup () {
   echo " 1      1049kB  512MB   511MB   fat32        efi   boot, esp"
   echo " 2      512MB   1024GB  1024GB               arch"
 }
+
 partitionSetup () {
   parted
+}
+
+askPartitionName () {
+  set -x
+  lsblk
+  set +x
+  echo "\nWhat's the main linux partition's name?"
+  read -p "main partition:>" mainpart
+  echo "What's the boot partition?"
+  read -p "boot partition:>" bootpart
 }
 
 formatMainPartition () {

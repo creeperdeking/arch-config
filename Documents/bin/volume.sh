@@ -1,3 +1,3 @@
 #!/bin/sh
 
-pactl list sinks | grep '^[[:space:]]Volume:' | head -n $(( $SINK + 1    )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' | awk  '{printf "%2d", $0;}'
+pactl get-sink-volume $(pactl get-default-sink) | head -n 1 | cut -d'/' -f 2 | cut -d'%' -f 1 | xargs

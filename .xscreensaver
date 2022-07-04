@@ -1,9 +1,9 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-settings 6.02 for alexis on Mon Jan 10 17:54:49 2022.
+# Written by xscreensaver-settings 6.02 for alexis on Mon Jan 24 14:20:47 2022.
 # https://www.jwz.org/xscreensaver/
 
 timeout:	0:10:00
-cycle:		0:10:00
+cycle:		0:03:00
 lock:		False
 lockTimeout:	0:00:00
 passwdTimeout:	0:00:30

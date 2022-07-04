@@ -152,6 +152,7 @@ alias unblock="sudo rfkill unblock 1"
 alias scan="iwctl station wlan0 scan"
 alias win="sudo mount /dev/nvme0n1p3 /mnt;cd /mnt/Documents\ and\ Settings"
 alias imt="cd ~/Documents/IMT_Atlantique/annee_2"
+alias xsnip="xsnip -o"
 alias pacinstall="sudo pacman -Syu"
 
 # Important to make urls work correctly within commands (ex: mpsyt)
@@ -249,6 +250,22 @@ eval "$(pyenv init -)"
 # --------------------------------
 
 p10k finalize
-alsi --normal=blue --bold=green
+alsi --normal=yellow --bold=blue -f ~/.aperture --usage-COLORS
 alias tmux="TERM=screen-256color-bce tmux"
 PATH=$PATH:~/Documents/bin
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/alexis/.miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/alexis/.miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/alexis/.miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/alexis/.miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
