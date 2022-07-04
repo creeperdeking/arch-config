@@ -25,7 +25,9 @@ PATH=$PATH:~/Documents/bin:~/.dotnet/tools:/home/alexis/.local/share/gem/ruby/3.
 #WLR_DRM_NO_ATOMIC=1
 #QT_QPA_PLATFORM=xcb
 
-DOTNET_CLI_TELEMETRY_OPTOUT=1
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+export OPENMC_CROSS_SECTIONS=/usr/share/jeff33_hdf5
 
 export NNN_FIFO=/tmp/nnn.fifo
 
